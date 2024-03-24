@@ -1,0 +1,43 @@
+.data:
+    str STRING "Hello, "
+    buf BUFFER 64
+
+.code:
+    JMP start
+
+print:
+    DUP
+    LOAD
+    JZ after_print
+    OUTPUT
+    INC
+    JMP print
+
+after_print:
+    RET
+
+start:
+    PUSH buf
+
+read:
+    DUP
+    INPUT
+    JZ after_read
+    POP
+    INC
+    JMP read
+
+after_read:
+    DROP
+    DROP
+    PUSH str
+    CALL print
+    DROP
+    PUSH buf
+    CALL print
+    DROP
+    HLT
+
+
+
+

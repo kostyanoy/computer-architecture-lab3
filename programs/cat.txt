@@ -1,0 +1,14 @@
+.code:
+
+loop:
+    INPUT
+    JZ break
+    OUTPUT
+    JMP loop
+
+break:
+    HLT
+
+
+
+

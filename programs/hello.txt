@@ -1,0 +1,21 @@
+.data:
+    str STRING "Hello world!"
+
+.code:
+    PUSH str
+
+loop:
+    DUP
+    LOAD
+    JZ break
+    OUTPUT
+    INC
+    JMP loop
+
+break:
+    DROP
+    HLT
+
+
+
+
