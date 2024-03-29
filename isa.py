@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+import struct
 from enum import Enum
 
 
@@ -8,10 +10,11 @@ class Opcode(Enum):
     2. Stack operations - starts with 01
     3. Arithmetics      - starts with 001
     4. IO               - starts with 0001
+    5. Data allocation  - starts with 00001
     """
 
     HLT     = 0b10000000
-    NOP     = 0b00000001
+    NOP     = 0b10000001
     JMP     = 0b10000010
     JZ      = 0b10000011
     CALL    = 0b10000100
@@ -34,4 +37,27 @@ class Opcode(Enum):
 
     INPUT   = 0b00010000
     OUTPUT  = 0b00010001
+
+    NUMBER  = 0b00001000
+    STRING  = 0b00001001
+    BUFFER  = 0b00001010
+
+
+def write_code(target: str, code: list[int]):
+    with open(target, "wb") as f:
+        f.write(struct.pack(f"{len(code)}B", *code))
+
+
+def read_code(source: str) -> list[int]:
+    code = []
+    with open(source, "rb") as f:
+        byte = f.read(1)
+        while byte:
+            code.append(*struct.unpack("B", byte))
+            byte = f.read(1)
+
+    return code
+
+
+
 
