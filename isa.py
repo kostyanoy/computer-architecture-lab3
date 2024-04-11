@@ -3,8 +3,13 @@ import struct
 from enum import Enum
 
 
+MIN_SIGN = -(2 ** 15)
+MAX_SIGN = 2 ** 15 - 1
+MAX_UNSIGN = 2 ** 16 - 1
+
 class Opcode(Enum):
     """
+    As program memory is 16-bit, only last byte is represented, first is 0x00
     Opcodes can be divided into groups:
     1. Program flow     - starts with 1
     2. Stack operations - starts with 01
@@ -45,19 +50,20 @@ class Opcode(Enum):
 
 def write_code(target: str, code: list[int]):
     with open(target, "wb") as f:
-        f.write(struct.pack(f"{len(code)}B", *code))
+        f.write(struct.pack(f"{len(code)}H", *code))
 
 
 def read_code(source: str) -> list[int]:
     code = []
     with open(source, "rb") as f:
-        byte = f.read(1)
-        while byte:
-            code.append(*struct.unpack("B", byte))
-            byte = f.read(1)
+        short = f.read(2)
+        while short:
+            code.append(*struct.unpack("H", short))
+            short = f.read(2)
 
     return code
 
 
+print(read_code("./out/cat.out"))
 
 

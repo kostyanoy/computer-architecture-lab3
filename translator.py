@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
 
-from isa import Opcode, write_code
+from isa import Opcode, write_code, MIN_SIGN, MAX_SIGN, MAX_UNSIGN
 
 
 def get_meaningful_token(line: str) -> str:
@@ -16,15 +16,15 @@ def translate_data_part(token: str) -> tuple[str, list[str | int | Opcode]]:
 
     if opcode == Opcode.NUMBER:
         num = int(arg)
-        assert -128 <= num <= 127, f"Wrong instruction argument: {token}"
+        assert MIN_SIGN <= num <= MAX_SIGN, f"Wrong instruction argument: {token}"
         if num < 0:
-            num = 256 + num
+            num = MAX_UNSIGN + num
         tokens += [num]
     elif opcode == Opcode.STRING:
         tokens += [ord(c) for c in arg] + [0]
     elif opcode == Opcode.BUFFER:
         num = int(arg)
-        assert 1 <= num <= 255, f"Wrong instruction argument: {token}"
+        assert 1 <= num <= MAX_UNSIGN, f"Wrong instruction argument: {token}"
         tokens += [num]
     else:
         raise AttributeError()
@@ -43,9 +43,9 @@ def translate_code_part(token: str) -> list[str | int | Opcode]:
         arg = sub_tokens[1]
         if arg.isdigit():
             arg = int(arg)
-            assert -128 <= arg < 127, f"8-bit numbers only {token}"
+            assert MIN_SIGN <= arg < MAX_SIGN, f"16-bit numbers only {token}"
             if arg < 0:
-                arg = 256 + arg
+                arg = MAX_UNSIGN + arg
 
         tokens += [opcode, arg]
 
@@ -100,7 +100,7 @@ def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens:
         if isinstance(token, Opcode):
             code.append(token.value)
         elif isinstance(token, int):
-            assert 0 <= token <= 255, f"8-bit numbers only {token}"
+            assert 0 <= token <= MAX_UNSIGN, f"16-bit numbers only {token}"
             code.append(token)
         else:
             assert token in labels or token in variables, f"Label or variable is not defined: {token}"
