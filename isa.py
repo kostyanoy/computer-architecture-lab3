@@ -64,6 +64,3 @@ def read_code(source: str) -> list[int]:
     return code
 
 
-print(read_code("./out/cat.out"))
-
-
