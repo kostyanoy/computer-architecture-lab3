@@ -12,22 +12,22 @@ def translate_data_part(token: str) -> tuple[str, list[str | int | Opcode]]:
     variable, str_opcode, arg = token.split(" ", 2)
     opcode = Opcode[str_opcode]
     assert opcode in [Opcode.NUMBER, Opcode.STRING, Opcode.BUFFER], f"Wrong instruction in data part {token}"
-    tokens = [opcode]
+    tokens = []
 
     if opcode == Opcode.NUMBER:
         num = int(arg)
         assert MIN_SIGN <= num <= MAX_SIGN, f"Wrong instruction argument: {token}"
         if num < 0:
             num = MAX_UNSIGN + num
-        tokens += [num]
+        tokens = [num]
     elif opcode == Opcode.STRING:
-        tokens += [ord(c) for c in arg] + [0]
+        tokens = [ord(c) for c in arg] + [0]
     elif opcode == Opcode.BUFFER:
         num = int(arg)
         assert 1 <= num <= MAX_UNSIGN, f"Wrong instruction argument: {token}"
-        tokens += [num]
+        tokens = [0] * num
     else:
-        raise AttributeError()
+        raise ValueError(f"Wrong opcode: {opcode}")
 
     return variable, tokens
 
@@ -59,7 +59,7 @@ def translate_code_part(token: str) -> list[str | int | Opcode]:
 def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[str | int | Opcode]]:
     variables = {}
     labels = {}
-    tokens = []
+    tokens = [0]  # first token is data part length
 
     data_stage = True
 
@@ -67,10 +67,13 @@ def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[s
     program_counter = 0
     for line in text.splitlines():
         token = get_meaningful_token(line)
+        if not data_stage and token == ".data":
+            raise ValueError(".data shouldn't't be there")
         if token == "" or token == ".data:":
             continue
 
         if token == ".code:":
+            tokens[0] = data_counter # set first word as data part length
             data_stage = False
             continue
 
@@ -78,7 +81,7 @@ def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[s
             variable, data_part = translate_data_part(token)
             assert variable not in variables, f"Redefinition of variable: {variable}"
             variables[variable] = data_counter
-            data_counter += len(data_part) - 1
+            data_counter += len(data_part)
             tokens += data_part
 
         else:
@@ -87,9 +90,9 @@ def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[s
                 assert label not in labels, f"Redefinition of label: {label}"
                 labels[label] = program_counter
             else:
-                tokens_part = translate_code_part(token)
-                program_counter += len(tokens_part)
-                tokens += tokens_part
+                code_part = translate_code_part(token)
+                program_counter += len(code_part)
+                tokens += code_part
 
     return labels, variables, tokens
 
