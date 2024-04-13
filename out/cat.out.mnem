@@ -1,0 +1,5 @@
+1 - 0010      - Opcode.INPUT
+2 - 0083 0006 - Opcode.JZ break
+4 - 0011      - Opcode.OUTPUT
+5 - 0082 0000 - Opcode.JMP loop
+7 - 0080      - Opcode.HLT

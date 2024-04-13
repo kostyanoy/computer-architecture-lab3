@@ -1,0 +1,27 @@
+72 - 0082 000B - Opcode.JMP start
+74 - 0045      - Opcode.DUP
+75 - 0042      - Opcode.LOAD
+76 - 0083 000A - Opcode.JZ after_print
+78 - 0011      - Opcode.OUTPUT
+79 - 0020      - Opcode.INC
+80 - 0082 0002 - Opcode.JMP print
+82 - 0085      - Opcode.RET
+83 - 0040 0007 - Opcode.PUSH buf
+85 - 0045      - Opcode.DUP
+86 - 0010      - Opcode.INPUT
+87 - 0083 0015 - Opcode.JZ after_read
+89 - 0041      - Opcode.POP
+90 - 0020      - Opcode.INC
+91 - 0082 000D - Opcode.JMP read
+93 - 0043      - Opcode.DROP
+94 - 0043      - Opcode.DROP
+95 - 0043      - Opcode.DROP
+96 - 0040 0000 - Opcode.PUSH str
+98 - 0084 0002 - Opcode.CALL print
+100 - 0043      - Opcode.DROP
+101 - 0043      - Opcode.DROP
+102 - 0040 0007 - Opcode.PUSH buf
+104 - 0084 0002 - Opcode.CALL print
+106 - 0043      - Opcode.DROP
+107 - 0043      - Opcode.DROP
+108 - 0080      - Opcode.HLT

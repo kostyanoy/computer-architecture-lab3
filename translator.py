@@ -97,10 +97,20 @@ def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[s
     return labels, variables, tokens
 
 
-def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens: list[str | int | Opcode]) -> list[int]:
+def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens: list[str | int | Opcode]) -> tuple[list[int], list[str]]:
     code = []
-    for token in tokens:
+    mnemonics = []
+    for ind, token in enumerate(tokens):
         if isinstance(token, Opcode):
+            if token in [Opcode.JMP, Opcode.JZ, Opcode.CALL, Opcode.PUSH]:
+                next_token = tokens[ind + 1]
+                if next_token in labels:
+                    next_token = labels[next_token]
+                elif next_token in variables:
+                    next_token = variables[next_token]
+                mnemonics.append(f"{ind} - {token.value:04X} {next_token:04X} - {token} {tokens[ind + 1]}")
+            else:
+                mnemonics.append(f"{ind} - {token.value:04X}      - {token}")
             code.append(token.value)
         elif isinstance(token, int):
             assert 0 <= token <= MAX_UNSIGN, f"16-bit numbers only {token}"
@@ -112,21 +122,24 @@ def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens:
             else:
                 code.append(variables[token])
 
-    return code
+    return code, mnemonics
 
 
-def translate(text: str) -> list[int]:
+def translate(text: str) -> tuple[list[int], list[str]]:
     labels, variables, tokens = translate_stage_1(text)
-    code = translate_stage_2(labels, variables, tokens)
+    code, mnemonics = translate_stage_2(labels, variables, tokens)
 
-    return code
+    return code, mnemonics
 
 
-def main(source: str, target: str):
+def main(source: str, target: str, target_mnem: str):
     with open(source, "r") as f:
         text = f.read()
 
-    code = translate(text)
+    code, mnemonics = translate(text)
+    with open(target_mnem, "w") as f:
+        for line in mnemonics:
+            f.write(line + "\n")
 
     write_code(target, code)
     print("LoC:", len(text.split('\n')), "Code bytes:", len(code) * 2)
@@ -135,15 +148,4 @@ def main(source: str, target: str):
 if __name__ == "__main__":
     assert len(sys.argv) == 3, r"Wrong arguments: .\translator.py <input_file> <output_file>"
     _, source, target = sys.argv
-    main(source, target)
-
-    # TODO remove test
-    # TODO log binary mnemonics
-    # with open(source, "r") as f:
-    #     text = f.read()
-    #
-    # res1 = translate_stage_1(text)
-    # res2 = translate(text)
-    #
-    # print(res1)
-    # print(res2)
+    main(source, target, target + ".mnem")
