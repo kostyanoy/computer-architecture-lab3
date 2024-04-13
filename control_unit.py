@@ -1,5 +1,6 @@
 import microprogram
 from datapath import DataPath
+from isa import Opcode
 from microprogram import ALU, MUX, Latch, DataMemory, IO, Halt
 
 
@@ -51,9 +52,9 @@ class ControlUnit:
     def get_mux_type_pc(self):
         if self.mux_type_pc == MUX.TYPE_PC_ZERO:
             if self.datapath.zero():
-                return MUX.PC_INC
-            else:
                 return MUX.PC_JUMP
+            else:
+                return MUX.PC_INC
         elif self.mux_type_pc == MUX.TYPE_PC_MPC:
             return self.mux_pc
         else:
@@ -110,7 +111,7 @@ class ControlUnit:
 
     def signal_latch_instruction_register(self):
         self.instruction_register = self.program_memory[self.program_counter]
-        self.instruction_decoder = microprogram.opcode_to_MPType(self.instruction_register)
+        self.instruction_decoder = microprogram.opcode_to_MPType(self.instruction_register).value
 
     def signal_latch_microprogram_counter(self):
         self.microprogram_counter = self.get_mux_mpc()
@@ -130,9 +131,12 @@ class ControlUnit:
         """
         microcommands = self.microprogram_memory[self.microprogram_counter]
 
+        self.mux_type_pc = MUX.TYPE_PC_MPC  # default
+
         for signal in microcommands:
+
             # Halt signal
-            if signal is Halt:
+            if isinstance(signal, Halt):
                 raise StopIteration("Halt!")
 
             # latch signals
@@ -211,5 +215,12 @@ class ControlUnit:
         self.tick()
 
     def __repr__(self):
-        pass
-        # TODO processor string representation
+        opcode = Opcode(self.instruction_register) if self.instruction_register in Opcode._value2member_map_ else None
+        stack = self.datapath.stack
+        tos = stack[self.datapath.stack_pointer]
+
+        state_repr = f"TICK: {self._tick:4} PC: {self.program_counter:3} MPC: {self.microprogram_counter:2} " \
+                     f"IR: {self.instruction_register:3} RSC: {self.return_stack_pointer:2} TOS: {tos: 3} " \
+                     f"AR: {self.datapath.data_address:3} SB: {self.datapath.stack_buffer:3} SP: {self.datapath.stack_pointer:2}" \
+                     f"\t{opcode}\t{stack[:10]}"
+        return state_repr

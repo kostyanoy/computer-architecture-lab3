@@ -1,3 +1,5 @@
+import logging
+
 from isa import MAX_UNSIGN
 from microprogram import MUX, ALU
 
@@ -25,14 +27,13 @@ class DataPath:
     input_value: str = None
     alu_operation: ALU = None
 
-    def __init__(self, data_memory_size: int, stack_size: int, input_buffer: list[str]):
-        assert data_memory_size > 0, "Data memory size must be > 0"
+    def __init__(self, data_memory: list[int], stack_size: int, input_buffer: list[str]):
         assert stack_size > 0, "Stack size must be > 0"
-        self.data_memory_size = data_memory_size
-        self.data_memory = [0] * data_memory_size
+        self.data_memory_size = len(data_memory)
+        self.data_memory = data_memory
         self.data_address = 0
         self.stack_size = stack_size
-        self.stack = [0] * stack_size
+        self.stack = [-1] * stack_size
         self.stack_pointer = 0
         self.stack_buffer = 0
         self.input_buffer = input_buffer
@@ -63,13 +64,13 @@ class DataPath:
             raise ValueError(f"Wrong mux_alu_left value: {self.mux_alu_left}")
 
     def get_mux_alu_right(self):
-        if self.mux_alu_left == MUX.ALU_RIGHT_STACK:
+        if self.mux_alu_right == MUX.ALU_RIGHT_STACK:
             return self.stack[self.stack_pointer - 1]
-        elif self.mux_alu_left == MUX.ALU_RIGHT_INC:
+        elif self.mux_alu_right == MUX.ALU_RIGHT_INC:
             return 1
-        elif self.mux_alu_left == MUX.ALU_RIGHT_ZERO:
+        elif self.mux_alu_right == MUX.ALU_RIGHT_ZERO:
             return 0
-        elif self.mux_alu_left == MUX.ALU_RIGHT_DEC:
+        elif self.mux_alu_right == MUX.ALU_RIGHT_DEC:
             return -1
         else:
             raise ValueError(f"Wrong mux_alu_right value: {self.mux_alu_right}")
@@ -167,12 +168,14 @@ class DataPath:
     def signal_input(self):
         if len(self.input_buffer) == 0:
             raise EOFError("End of input file")
-        self.input_value = self.input_buffer.pop(0)
-        # TODO log input
+        symbol = self.input_buffer.pop(0)
+        self.input_value = symbol
+        logging.debug(f"input: {symbol}")
 
     def signal_output(self):
-        self.output_buffer.append(self.get_mux_stack_data())
-        # TODO log output
+        symbol = self.get_mux_stack_data()
+        self.output_buffer.append(symbol)
+        logging.debug(f"output: {''.join(map(chr, self.output_buffer))} << {symbol}")
 
     def zero(self):
         return self.stack[self.stack_pointer] == 0
