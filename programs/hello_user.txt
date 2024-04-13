@@ -1,5 +1,5 @@
 .data:
-    str STRING "Hello, "
+    str STRING Hello,
     buf BUFFER 64
 
 .code:
@@ -28,14 +28,17 @@ read:
     JMP read
 
 after_read:
-    DROP
-    DROP
+    DROP ; 0
+    DROP ; dupped buf
+    DROP ; buf
     PUSH str
     CALL print
-    DROP
+    DROP ; 0
+    DROP ; str
     PUSH buf
     CALL print
-    DROP
+    DROP ; 0
+    DROP ; str
     HLT
 
 

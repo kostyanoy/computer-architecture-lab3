@@ -1,5 +1,5 @@
 .data:
-    str STRING "Hello world!"
+    str STRING Hello world!
 
 .code:
     PUSH str

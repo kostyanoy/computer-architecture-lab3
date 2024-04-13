@@ -32,7 +32,7 @@ class ControlUnit:
         self.program_counter = 0
         self.return_stack_size = stack_size
         self.return_stack = [0] * stack_size
-        self.return_stack_pointer = 0
+        self.return_stack_pointer = -1
         self.instruction_register = 0
         self.microprogram_memory = microprogram
         self.microprogram_counter = 0
@@ -108,6 +108,7 @@ class ControlUnit:
 
     def signal_latch_return_stack_pointer(self):
         self.return_stack_pointer = self.get_mux_rsp()
+        assert -1 <= self.return_stack_pointer < self.return_stack_size, f"Out of stack: {self.return_stack_pointer}"
 
     def signal_latch_instruction_register(self):
         self.instruction_register = self.program_memory[self.program_counter]
@@ -117,7 +118,7 @@ class ControlUnit:
         self.microprogram_counter = self.get_mux_mpc()
 
     def signal_latch_return_stack(self):
-        self.return_stack[self.return_stack_pointer] = self.program_counter
+        self.return_stack[self.return_stack_pointer] = self.program_counter + 1  # To jump to next command!
 
     def decode_and_execute(self):
         """
@@ -222,5 +223,5 @@ class ControlUnit:
         state_repr = f"TICK: {self._tick:4} PC: {self.program_counter:3} MPC: {self.microprogram_counter:2} " \
                      f"IR: {self.instruction_register:3} RSC: {self.return_stack_pointer:2} TOS: {tos: 3} " \
                      f"AR: {self.datapath.data_address:3} SB: {self.datapath.stack_buffer:3} SP: {self.datapath.stack_pointer:2}" \
-                     f"\t{opcode}\t{stack[:10]}"
+                     f"\t{opcode}\tStack: {stack[:5]}\t Return: {self.return_stack[:5]}"
         return state_repr

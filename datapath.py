@@ -34,7 +34,7 @@ class DataPath:
         self.data_address = 0
         self.stack_size = stack_size
         self.stack = [-1] * stack_size
-        self.stack_pointer = 0
+        self.stack_pointer = -1
         self.stack_buffer = 0
         self.input_buffer = input_buffer
         self.output_buffer = []
@@ -146,7 +146,7 @@ class DataPath:
 
     def signal_latch_stack_pointer(self):
         self.stack_pointer = self.get_mux_stack_pointer()
-        assert 0 <= self.stack_pointer < self.stack_size, f"Out of stack: {self.stack_pointer}"
+        assert -1 <= self.stack_pointer < self.stack_size, f"Out of stack: {self.stack_pointer}"
 
     def signal_latch_tos(self):
         self.stack[self.stack_pointer] = self.get_mux_stack_value()
