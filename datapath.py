@@ -170,6 +170,8 @@ class DataPath:
             raise EOFError("End of input file")
         symbol = self.input_buffer.pop(0)
         self.input_value = symbol
+        if ord(symbol) == 0:
+            symbol = ""
         logging.debug(f"input: {symbol}")
 
     def signal_output(self):

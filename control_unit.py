@@ -31,7 +31,7 @@ class ControlUnit:
         self.program_memory = program
         self.program_counter = 0
         self.return_stack_size = stack_size
-        self.return_stack = [0] * stack_size
+        self.return_stack = [-1] * stack_size
         self.return_stack_pointer = -1
         self.instruction_register = 0
         self.microprogram_memory = microprogram

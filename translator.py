@@ -129,6 +129,7 @@ def main(source: str, target: str):
     code = translate(text)
 
     write_code(target, code)
+    print("LoC:", len(text.split('\n')), "Code bytes:", len(code) * 2)
 
 
 if __name__ == "__main__":
@@ -136,11 +137,13 @@ if __name__ == "__main__":
     _, source, target = sys.argv
     main(source, target)
 
-    with open(source, "r") as f:
-        text = f.read()
-
-    res1 = translate_stage_1(text)
-    res2 = translate(text)
-
-    print(res1)
-    print(res2)
+    # TODO remove test
+    # TODO log binary mnemonics
+    # with open(source, "r") as f:
+    #     text = f.read()
+    #
+    # res1 = translate_stage_1(text)
+    # res2 = translate(text)
+    #
+    # print(res1)
+    # print(res2)

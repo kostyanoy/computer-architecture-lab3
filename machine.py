@@ -20,8 +20,11 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
     control_unit = ControlUnit(code, microprogram, stack_size, datapath)
 
     logging.debug(repr(control_unit))
+    instructions = 0
     try:
         while control_unit.current_tick() < limit:
+            if control_unit.microprogram_counter == 0:
+                instructions += 1
             control_unit.decode_and_execute()
             logging.debug(control_unit)
     except EOFError:
@@ -36,7 +39,7 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
     output = "".join(map(chr, datapath.output_buffer))
     logging.info(f"output_buffer: {output}")
 
-    return output, control_unit.current_tick()
+    return output, instructions, control_unit.current_tick()
 
 
 def main(code_file: str, input_file: str):
@@ -56,11 +59,11 @@ def main(code_file: str, input_file: str):
     code = machine_code[data_len + 1:]
 
     logging.info("Start simulation")
-    output, ticks = simulation(data, code, microprogram_memory, STACK_SIZE, input_buffer, LIMIT)
+    output, instructions, ticks = simulation(data, code, microprogram_memory, STACK_SIZE, input_buffer, LIMIT)
     logging.info("End simulation")
 
     print(output)
-    print(f"Ticks: {ticks}")
+    print(f"Instructions: {instructions} Ticks: {ticks}")
 
 
 if __name__ == "__main__":
