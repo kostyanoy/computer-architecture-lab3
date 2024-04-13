@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "computer-architecture-lab3"
+version = "0.1.0"
+description = ""
+authors = ["Kosty Manuhin <kostymanuhin@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+coverage = "^7.4.4"
+ruff = "^0.3.7"
+pytest-golden = "^0.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
