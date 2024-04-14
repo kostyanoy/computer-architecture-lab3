@@ -39,7 +39,7 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
         logging.warning("Limit exceeded!")
         pass
 
-    output = "".join(map(chr, datapath.output_buffer))
+    output = ''.join(map(lambda x: chr(x) if x < 256 else str(x), datapath.output_buffer))
     logging.info(f"output_buffer: {output}")
 
     return output, instructions, control_unit.current_tick()
@@ -47,7 +47,7 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
 
 def main(code_file: str, input_file: str, full: bool = True):
 
-    STACK_SIZE = 128
+    STACK_SIZE = 10
     LIMIT = 1000
 
     machine_code = read_code(code_file)
@@ -71,10 +71,10 @@ def main(code_file: str, input_file: str, full: bool = True):
 
 if __name__ == "__main__":
     assert len(sys.argv) in [2, 3], r"Wrong arguments: .\machine.py <code_file> [<input_file>]"
-    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().setLevel(logging.INFO)  # DEBUG for details; INFO for results
     if len(sys.argv) == 2:
         _, code_file = sys.argv
         input_file = None
     else:
         _, code_file, input_file = sys.argv
-    main(code_file, input_file, True)
+    main(code_file, input_file, False)

@@ -71,7 +71,8 @@ class IO(Enum):
     OUTPUT = 1
 
 
-class Halt: pass
+class Halt:
+    pass
 
 
 # instruction address in microprogram memory (!)

@@ -3,9 +3,9 @@ import struct
 from enum import Enum
 
 
-MIN_SIGN = -(2 ** 15)
-MAX_SIGN = 2 ** 15 - 1
-MAX_UNSIGN = 2 ** 16 - 1
+MIN_SIGN = -(2 ** 31)
+MAX_SIGN = 2 ** 31 - 1
+MAX_UNSIGN = 2 ** 32 - 1
 
 class Opcode(Enum):
     """
@@ -50,17 +50,15 @@ class Opcode(Enum):
 
 def write_code(target: str, code: list[int]):
     with open(target, "wb") as f:
-        f.write(struct.pack(f"{len(code)}H", *code))
+        f.write(struct.pack(f"{len(code)}I", *code))
 
 
 def read_code(source: str) -> list[int]:
     code = []
     with open(source, "rb") as f:
-        short = f.read(2)
+        short = f.read(4)
         while short:
-            code.append(*struct.unpack("H", short))
-            short = f.read(2)
+            code.append(*struct.unpack("I", short))
+            short = f.read(4)
 
     return code
-
-

@@ -177,7 +177,7 @@ class DataPath:
     def signal_output(self):
         symbol = self.get_mux_stack_data()
         self.output_buffer.append(symbol)
-        logging.debug(f"output: {''.join(map(chr, self.output_buffer))} << {symbol}")
+        logging.debug(f"output: {''.join(map(lambda x: chr(x) if x < 256 else str(x), self.output_buffer))} << {symbol}")
 
     def zero(self):
         return self.stack[self.stack_pointer] == 0

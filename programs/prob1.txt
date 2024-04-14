@@ -1,0 +1,41 @@
+.data:
+    sum NUMBER 0
+
+.code:
+start:
+    PUSH 1000 ; i
+
+loop:
+    DEC
+    JZ end
+    DUP
+    PUSH 3
+    MOD
+    JZ loop_suc
+    DROP
+    DUP
+    PUSH 5
+    MOD
+    JZ loop_suc
+    DROP
+
+loop_fail:
+    JMP loop
+
+loop_suc:
+    DROP
+    DUP
+    PUSH sum
+    LOAD
+    ADD
+    PUSH sum
+    SWAP
+    POP
+    JMP loop
+
+end:
+    DROP
+    PUSH sum
+    LOAD
+    OUTPUT
+    HLT

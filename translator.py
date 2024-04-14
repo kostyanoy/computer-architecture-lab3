@@ -108,9 +108,9 @@ def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens:
                     next_token = labels[next_token]
                 elif next_token in variables:
                     next_token = variables[next_token]
-                mnemonics.append(f"{ind} - {token.value:04X} {next_token:04X} - {token} {tokens[ind + 1]}")
+                mnemonics.append(f"{ind} - {token.value:08X} {next_token:08X} - {token} {tokens[ind + 1]}")
             else:
-                mnemonics.append(f"{ind} - {token.value:04X}      - {token}")
+                mnemonics.append(f"{ind} - {token.value:08X}          - {token}")
             code.append(token.value)
         elif isinstance(token, int):
             assert 0 <= token <= MAX_UNSIGN, f"16-bit numbers only {token}"
@@ -132,14 +132,16 @@ def translate(text: str) -> tuple[list[int], list[str]]:
     return code, mnemonics
 
 
-def main(source: str, target: str, target_mnem: str):
+def main(source: str, target: str, target_mnem: str = None):
     with open(source, "r") as f:
         text = f.read()
 
     code, mnemonics = translate(text)
-    with open(target_mnem, "w") as f:
-        for line in mnemonics:
-            f.write(line + "\n")
+
+    if target_mnem is not None:
+        with open(target_mnem, "w") as f:
+            for line in mnemonics:
+                f.write(line + "\n")
 
     write_code(target, code)
     print("LoC:", len(text.split('\n')), "Code bytes:", len(code) * 2)
