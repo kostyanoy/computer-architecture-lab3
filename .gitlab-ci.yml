@@ -1,0 +1,16 @@
+stages:         
+  - test
+
+golden-test-job:  
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  script:
+    - echo "Running golden tests..."
+    - poetry run pytest .
+
+lint-test-job: 
+  stage: test    # It can run at the same time as unit-test-job (in parallel).
+  script:
+    - echo "Linting code..."
+    - poetry run ruff format --check .
+    - poetry run ruff check .
+
