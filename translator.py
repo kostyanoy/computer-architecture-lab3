@@ -11,7 +11,11 @@ def get_meaningful_token(line: str) -> str:
 def translate_data_part(token: str) -> tuple[str, list[str | int | Opcode]]:
     variable, str_opcode, arg = token.split(" ", 2)
     opcode = Opcode[str_opcode]
-    assert opcode in [Opcode.NUMBER, Opcode.STRING, Opcode.BUFFER], f"Wrong instruction in data part {token}"
+    assert opcode in [
+        Opcode.NUMBER,
+        Opcode.STRING,
+        Opcode.BUFFER,
+    ], f"Wrong instruction in data part {token}"
     tokens = []
 
     if opcode == Opcode.NUMBER:
@@ -36,10 +40,16 @@ def translate_code_part(token: str) -> list[str | int | Opcode]:
     tokens = []
     if " " in token:  # instruction with argument
         sub_tokens = token.split(" ")
-        assert len(sub_tokens) == 2, f"Invalid instruction, check arguments amount: {token}"
+        assert (
+            len(sub_tokens) == 2
+        ), f"Invalid instruction, check arguments amount: {token}"
         opcode = Opcode[sub_tokens[0]]
-        assert opcode in [Opcode.PUSH, Opcode.JMP, Opcode.JZ,
-                          Opcode.CALL], f"Instruction shouldn't have an argument: {token}"
+        assert opcode in [
+            Opcode.PUSH,
+            Opcode.JMP,
+            Opcode.JZ,
+            Opcode.CALL,
+        ], f"Instruction shouldn't have an argument: {token}"
         arg = sub_tokens[1]
         if arg.isdigit():
             arg = int(arg)
@@ -56,7 +66,9 @@ def translate_code_part(token: str) -> list[str | int | Opcode]:
     return tokens
 
 
-def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[str | int | Opcode]]:
+def translate_stage_1(
+    text: str,
+) -> tuple[dict[str, int], dict[str, int], list[str | int | Opcode]]:
     variables = {}
     labels = {}
     tokens = [0]  # first token is data part length
@@ -73,7 +85,7 @@ def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[s
             continue
 
         if token == ".code:":
-            tokens[0] = data_counter # set first word as data part length
+            tokens[0] = data_counter  # set first word as data part length
             data_stage = False
             continue
 
@@ -97,7 +109,9 @@ def translate_stage_1(text: str) -> tuple[dict[str, int], dict[str, int], list[s
     return labels, variables, tokens
 
 
-def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens: list[str | int | Opcode]) -> tuple[list[int], list[str]]:
+def translate_stage_2(
+    labels: dict[str, int], variables: dict[str, int], tokens: list[str | int | Opcode]
+) -> tuple[list[int], list[str]]:
     code = []
     mnemonics = []
     for ind, token in enumerate(tokens):
@@ -108,7 +122,9 @@ def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens:
                     next_token = labels[next_token]
                 elif next_token in variables:
                     next_token = variables[next_token]
-                mnemonics.append(f"{ind} - {token.value:08X} {next_token:08X} - {token} {tokens[ind + 1]}")
+                mnemonics.append(
+                    f"{ind} - {token.value:08X} {next_token:08X} - {token} {tokens[ind + 1]}"
+                )
             else:
                 mnemonics.append(f"{ind} - {token.value:08X}          - {token}")
             code.append(token.value)
@@ -116,7 +132,9 @@ def translate_stage_2(labels: dict[str, int], variables: dict[str, int], tokens:
             assert 0 <= token <= MAX_UNSIGN, f"16-bit numbers only {token}"
             code.append(token)
         else:
-            assert token in labels or token in variables, f"Label or variable is not defined: {token}"
+            assert (
+                token in labels or token in variables
+            ), f"Label or variable is not defined: {token}"
             if token in labels:
                 code.append(labels[token])
             else:
@@ -144,10 +162,12 @@ def main(source: str, target: str, target_mnem: str = None):
                 f.write(line + "\n")
 
     write_code(target, code)
-    print("LoC:", len(text.split('\n')), "Code bytes:", len(code) * 2)
+    print("LoC:", len(text.split("\n")), "Code bytes:", len(code) * 2)
 
 
 if __name__ == "__main__":
-    assert len(sys.argv) == 3, r"Wrong arguments: .\translator.py <input_file> <output_file>"
+    assert (
+        len(sys.argv) == 3
+    ), r"Wrong arguments: .\translator.py <input_file> <output_file>"
     _, source, target = sys.argv
     main(source, target, target + ".mnem")

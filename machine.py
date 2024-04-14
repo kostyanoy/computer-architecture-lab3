@@ -7,7 +7,15 @@ from isa import read_code
 from microprogram import microprogram_memory
 
 
-def simulation(data: list[int], code: list[int], microprogram: list, stack_size: int, input_buffer: list[str], limit: int, full: bool = True):
+def simulation(
+    data: list[int],
+    code: list[int],
+    microprogram: list,
+    stack_size: int,
+    input_buffer: list[str],
+    limit: int,
+    full: bool = True,
+):
     """
     Prepare datapath and control unit
 
@@ -39,14 +47,15 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
         logging.warning("Limit exceeded!")
         pass
 
-    output = ''.join(map(lambda x: chr(x) if x < 256 else str(x), datapath.output_buffer))
+    output = "".join(
+        map(lambda x: chr(x) if x < 256 else str(x), datapath.output_buffer)
+    )
     logging.info(f"output_buffer: {output}")
 
     return output, instructions, control_unit.current_tick()
 
 
 def main(code_file: str, input_file: str, full: bool = True):
-
     STACK_SIZE = 10
     LIMIT = 1000
 
@@ -58,11 +67,13 @@ def main(code_file: str, input_file: str, full: bool = True):
             input_buffer = list(f.read()) + [chr(0)]
 
     data_len = machine_code[0]
-    data = machine_code[1: data_len + 1]
-    code = machine_code[data_len + 1:]
+    data = machine_code[1 : data_len + 1]
+    code = machine_code[data_len + 1 :]
 
     logging.info("Start simulation")
-    output, instructions, ticks = simulation(data, code, microprogram_memory, STACK_SIZE, input_buffer, LIMIT, full)
+    output, instructions, ticks = simulation(
+        data, code, microprogram_memory, STACK_SIZE, input_buffer, LIMIT, full
+    )
     logging.info("End simulation")
 
     print(output)
@@ -70,7 +81,10 @@ def main(code_file: str, input_file: str, full: bool = True):
 
 
 if __name__ == "__main__":
-    assert len(sys.argv) in [2, 3], r"Wrong arguments: .\machine.py <code_file> [<input_file>]"
+    assert len(sys.argv) in [
+        2,
+        3,
+    ], r"Wrong arguments: .\machine.py <code_file> [<input_file>]"
     logging.getLogger().setLevel(logging.INFO)  # DEBUG for details; INFO for results
     if len(sys.argv) == 2:
         _, code_file = sys.argv

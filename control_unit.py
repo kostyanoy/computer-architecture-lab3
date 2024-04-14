@@ -27,7 +27,13 @@ class ControlUnit:
     latch: list = None  # latching when comes synchronize signal
     latch_pointers: list = None  # latching pointers when comes synchronize signal
 
-    def __init__(self, program: list[int], microprogram: list, stack_size: int, datapath: DataPath):
+    def __init__(
+        self,
+        program: list[int],
+        microprogram: list,
+        stack_size: int,
+        datapath: DataPath,
+    ):
         self.program_memory = program
         self.program_counter = 0
         self.return_stack_size = stack_size
@@ -108,17 +114,23 @@ class ControlUnit:
 
     def signal_latch_return_stack_pointer(self):
         self.return_stack_pointer = self.get_mux_rsp()
-        assert -1 <= self.return_stack_pointer < self.return_stack_size, f"Out of stack: {self.return_stack_pointer}"
+        assert (
+            -1 <= self.return_stack_pointer < self.return_stack_size
+        ), f"Out of stack: {self.return_stack_pointer}"
 
     def signal_latch_instruction_register(self):
         self.instruction_register = self.program_memory[self.program_counter]
-        self.instruction_decoder = microprogram.opcode_to_MPType(self.instruction_register).value
+        self.instruction_decoder = microprogram.opcode_to_MPType(
+            self.instruction_register
+        ).value
 
     def signal_latch_microprogram_counter(self):
         self.microprogram_counter = self.get_mux_mpc()
 
     def signal_latch_return_stack(self):
-        self.return_stack[self.return_stack_pointer] = self.program_counter + 1  # To jump to next command!
+        self.return_stack[self.return_stack_pointer] = (
+            self.program_counter + 1
+        )  # To jump to next command!
 
     def decode_and_execute(self):
         """
@@ -135,7 +147,6 @@ class ControlUnit:
         self.mux_type_pc = MUX.TYPE_PC_MPC  # default
 
         for signal in microcommands:
-
             # Halt signal
             if isinstance(signal, Halt):
                 raise StopIteration("Halt!")
@@ -181,13 +192,26 @@ class ControlUnit:
                 self.datapath.signal_output()
 
             # MUX signals
-            elif signal in [MUX.STACK_VALUE_DATA, MUX.STACK_VALUE_IMMEDIATE, MUX.STACK_VALUE_INPUT, MUX.STACK_VALUE_ALU, MUX.STACK_VALUE_SB]:
+            elif signal in [
+                MUX.STACK_VALUE_DATA,
+                MUX.STACK_VALUE_IMMEDIATE,
+                MUX.STACK_VALUE_INPUT,
+                MUX.STACK_VALUE_ALU,
+                MUX.STACK_VALUE_SB,
+            ]:
                 if signal == MUX.STACK_VALUE_IMMEDIATE:
-                    self.datapath.immediate_value = self.program_memory[self.program_counter]
+                    self.datapath.immediate_value = self.program_memory[
+                        self.program_counter
+                    ]
                 self.datapath.signal_mux_stack_value(signal)
             elif signal in [MUX.ALU_LEFT_ZERO, MUX.ALU_LEFT_STACK]:
                 self.datapath.signal_mux_alu_left(signal)
-            elif signal in [MUX.ALU_RIGHT_ZERO, MUX.ALU_RIGHT_DEC, MUX.ALU_RIGHT_INC, MUX.ALU_RIGHT_STACK]:
+            elif signal in [
+                MUX.ALU_RIGHT_ZERO,
+                MUX.ALU_RIGHT_DEC,
+                MUX.ALU_RIGHT_INC,
+                MUX.ALU_RIGHT_STACK,
+            ]:
                 self.datapath.signal_mux_alu_right(signal)
             elif signal in [MUX.TYPE_PC_ZERO, MUX.TYPE_PC_MPC]:
                 self.signal_mux_type_pc(signal)
@@ -216,12 +240,18 @@ class ControlUnit:
         self.tick()
 
     def __repr__(self):
-        opcode = Opcode(self.instruction_register) if self.instruction_register in Opcode._value2member_map_ else None
+        opcode = (
+            Opcode(self.instruction_register)
+            if self.instruction_register in Opcode._value2member_map_
+            else None
+        )
         stack = self.datapath.stack
         tos = stack[self.datapath.stack_pointer]
 
-        state_repr = f"TICK: {self._tick:4} PC: {self.program_counter:3} MPC: {self.microprogram_counter:2} " \
-                     f"IR: {self.instruction_register:3} RSC: {self.return_stack_pointer:2} TOS: {tos: 3} " \
-                     f"AR: {self.datapath.data_address:3} SB: {self.datapath.stack_buffer:3} SP: {self.datapath.stack_pointer:2}" \
-                     f"\t{opcode}\tStack: {stack[:5]}\t Return: {self.return_stack[:5]}"
+        state_repr = (
+            f"TICK: {self._tick:4} PC: {self.program_counter:3} MPC: {self.microprogram_counter:2} "
+            f"IR: {self.instruction_register:3} RSC: {self.return_stack_pointer:2} TOS: {tos: 3} "
+            f"AR: {self.datapath.data_address:3} SB: {self.datapath.stack_buffer:3} SP: {self.datapath.stack_pointer:2}"
+            f"\t{opcode}\tStack: {stack[:5]}\t Return: {self.return_stack[:5]}"
+        )
         return state_repr

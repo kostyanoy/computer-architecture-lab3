@@ -10,14 +10,13 @@ import machine
 import translator
 from isa import read_code
 
-# TODO main algorithm
+
 # TODO Ci gitlab
-# TODO check harv
 # TODO адресация портов ??
 @pytest.mark.golden_test("golden/*_full.yml")
 def test_translator_and_machine(golden, caplog):
     """
-    Test: poetry poetry run pytest . -v
+    Test: poetry run pytest . -v
     Update tests: poetry run pytest . -v --update-goldens
     """
     caplog.set_level(logging.DEBUG)

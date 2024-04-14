@@ -3,12 +3,20 @@ stages:
 
 golden-test-job:  
   stage: test    # It only starts when the job in the build stage completes successfully.
+  image:
+    name: python-tools
+    entrypoint: [""]
+
   script:
     - echo "Running golden tests..."
     - poetry run pytest .
 
 lint-test-job: 
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
+  stage: test
+  image:
+    name: python-tools
+    entrypoint: [""]
+
   script:
     - echo "Linting code..."
     - poetry run ruff format --check .

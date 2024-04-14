@@ -12,11 +12,11 @@ in_source: |-
 in_stdin: |-
   Hello, can you repeat me?
 out_mnemonics: |
-  1 - 0010      - Opcode.INPUT
-  2 - 0083 0006 - Opcode.JZ break
-  4 - 0011      - Opcode.OUTPUT
-  5 - 0082 0000 - Opcode.JMP loop
-  7 - 0080      - Opcode.HLT
+  1 - 00000010          - Opcode.INPUT
+  2 - 00000083 00000006 - Opcode.JZ break
+  4 - 00000011          - Opcode.OUTPUT
+  5 - 00000082 00000000 - Opcode.JMP loop
+  7 - 00000080          - Opcode.HLT
 out_code:
 - 0
 - 16
@@ -32,187 +32,187 @@ out_stdout: |
   Hello, can you repeat me?
   Instructions: 103 Ticks: 334
 out_log: |
-  INFO     root:machine.py:64 Start simulation
-  DEBUG    root:machine.py:22 TICK:    0 PC:   0 MPC:  0 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	None	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:    2 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:    3 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: H
-  DEBUG    root:machine.py:31 TICK:    6 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:    9 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: H << 72
-  DEBUG    root:machine.py:31 TICK:   12 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   15 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   16 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: e
-  DEBUG    root:machine.py:31 TICK:   19 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   22 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: He << 101
-  DEBUG    root:machine.py:31 TICK:   25 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   28 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   29 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: l
-  DEBUG    root:machine.py:31 TICK:   32 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   35 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hel << 108
-  DEBUG    root:machine.py:31 TICK:   38 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   41 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   42 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: l
-  DEBUG    root:machine.py:31 TICK:   45 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   48 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hell << 108
-  DEBUG    root:machine.py:31 TICK:   51 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   54 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   55 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: o
-  DEBUG    root:machine.py:31 TICK:   58 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   61 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello << 111
-  DEBUG    root:machine.py:31 TICK:   64 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   67 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   68 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: ,
-  DEBUG    root:machine.py:31 TICK:   71 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  44 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   74 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  44 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, << 44
-  DEBUG    root:machine.py:31 TICK:   77 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   80 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   81 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  44 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input:  
-  DEBUG    root:machine.py:31 TICK:   84 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   87 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello,  << 32
-  DEBUG    root:machine.py:31 TICK:   90 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   93 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:   94 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: c
-  DEBUG    root:machine.py:31 TICK:   97 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  99 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  100 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  99 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, c << 99
-  DEBUG    root:machine.py:31 TICK:  103 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  106 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  107 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  99 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: a
-  DEBUG    root:machine.py:31 TICK:  110 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  113 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, ca << 97
-  DEBUG    root:machine.py:31 TICK:  116 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  119 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  120 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: n
-  DEBUG    root:machine.py:31 TICK:  123 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  110 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  126 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  110 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can << 110
-  DEBUG    root:machine.py:31 TICK:  129 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  132 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  133 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  110 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input:  
-  DEBUG    root:machine.py:31 TICK:  136 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  139 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can  << 32
-  DEBUG    root:machine.py:31 TICK:  142 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  145 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  146 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: y
-  DEBUG    root:machine.py:31 TICK:  149 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  121 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  152 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  121 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can y << 121
-  DEBUG    root:machine.py:31 TICK:  155 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  158 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  159 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  121 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: o
-  DEBUG    root:machine.py:31 TICK:  162 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  165 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can yo << 111
-  DEBUG    root:machine.py:31 TICK:  168 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  171 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  172 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: u
-  DEBUG    root:machine.py:31 TICK:  175 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  117 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  178 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  117 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you << 117
-  DEBUG    root:machine.py:31 TICK:  181 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  184 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  185 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  117 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input:  
-  DEBUG    root:machine.py:31 TICK:  188 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  191 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you  << 32
-  DEBUG    root:machine.py:31 TICK:  194 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  197 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  198 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: r
-  DEBUG    root:machine.py:31 TICK:  201 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  114 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  204 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  114 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you r << 114
-  DEBUG    root:machine.py:31 TICK:  207 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  210 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  211 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  114 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: e
-  DEBUG    root:machine.py:31 TICK:  214 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  217 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you re << 101
-  DEBUG    root:machine.py:31 TICK:  220 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  223 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  224 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: p
-  DEBUG    root:machine.py:31 TICK:  227 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  112 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  230 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  112 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you rep << 112
-  DEBUG    root:machine.py:31 TICK:  233 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  236 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  237 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  112 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: e
-  DEBUG    root:machine.py:31 TICK:  240 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  243 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repe << 101
-  DEBUG    root:machine.py:31 TICK:  246 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  249 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  250 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: a
-  DEBUG    root:machine.py:31 TICK:  253 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  256 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repea << 97
-  DEBUG    root:machine.py:31 TICK:  259 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  262 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  263 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: t
-  DEBUG    root:machine.py:31 TICK:  266 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  116 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  269 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  116 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repeat << 116
-  DEBUG    root:machine.py:31 TICK:  272 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  275 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  276 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  116 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input:  
-  DEBUG    root:machine.py:31 TICK:  279 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  282 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repeat  << 32
-  DEBUG    root:machine.py:31 TICK:  285 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  288 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  289 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: m
-  DEBUG    root:machine.py:31 TICK:  292 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  109 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  295 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  109 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repeat m << 109
-  DEBUG    root:machine.py:31 TICK:  298 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  301 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  302 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  109 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: e
-  DEBUG    root:machine.py:31 TICK:  305 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  308 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repeat me << 101
-  DEBUG    root:machine.py:31 TICK:  311 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  314 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  315 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: ?
-  DEBUG    root:machine.py:31 TICK:  318 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  63 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  321 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  63 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:180 output: Hello, can you repeat me? << 63
-  DEBUG    root:machine.py:31 TICK:  324 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  327 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  328 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  63 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:datapath.py:175 input: 
-  DEBUG    root:machine.py:31 TICK:  331 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [0, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  DEBUG    root:machine.py:31 TICK:  334 PC:   7 MPC:  2 IR: 128 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	Opcode.HLT	Stack: [0, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
-  INFO     root:machine.py:43 output_buffer: Hello, can you repeat me?
-  INFO     root:machine.py:66 End simulation
+  INFO     root:machine.py:73 Start simulation
+  DEBUG    root:machine.py:30 TICK:    0 PC:   0 MPC:  0 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	None	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    2 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    3 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: H
+  DEBUG    root:machine.py:39 TICK:    6 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    9 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: H << 72
+  DEBUG    root:machine.py:39 TICK:   12 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   15 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   16 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [72, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: e
+  DEBUG    root:machine.py:39 TICK:   19 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   22 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: He << 101
+  DEBUG    root:machine.py:39 TICK:   25 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   28 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   29 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: l
+  DEBUG    root:machine.py:39 TICK:   32 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   35 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hel << 108
+  DEBUG    root:machine.py:39 TICK:   38 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   41 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   42 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: l
+  DEBUG    root:machine.py:39 TICK:   45 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   48 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hell << 108
+  DEBUG    root:machine.py:39 TICK:   51 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   54 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   55 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  108 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [108, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: o
+  DEBUG    root:machine.py:39 TICK:   58 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   61 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello << 111
+  DEBUG    root:machine.py:39 TICK:   64 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   67 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   68 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: ,
+  DEBUG    root:machine.py:39 TICK:   71 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  44 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   74 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  44 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, << 44
+  DEBUG    root:machine.py:39 TICK:   77 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   80 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   81 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  44 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [44, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input:  
+  DEBUG    root:machine.py:39 TICK:   84 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   87 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello,  << 32
+  DEBUG    root:machine.py:39 TICK:   90 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   93 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   94 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: c
+  DEBUG    root:machine.py:39 TICK:   97 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  99 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  100 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  99 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, c << 99
+  DEBUG    root:machine.py:39 TICK:  103 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  106 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  107 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  99 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [99, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: a
+  DEBUG    root:machine.py:39 TICK:  110 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  113 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, ca << 97
+  DEBUG    root:machine.py:39 TICK:  116 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  119 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  120 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: n
+  DEBUG    root:machine.py:39 TICK:  123 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  110 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  126 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  110 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can << 110
+  DEBUG    root:machine.py:39 TICK:  129 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  132 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  133 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  110 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [110, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input:  
+  DEBUG    root:machine.py:39 TICK:  136 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  139 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can  << 32
+  DEBUG    root:machine.py:39 TICK:  142 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  145 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  146 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: y
+  DEBUG    root:machine.py:39 TICK:  149 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  121 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  152 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  121 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can y << 121
+  DEBUG    root:machine.py:39 TICK:  155 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  158 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  159 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  121 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [121, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: o
+  DEBUG    root:machine.py:39 TICK:  162 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  165 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can yo << 111
+  DEBUG    root:machine.py:39 TICK:  168 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  171 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  172 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  111 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [111, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: u
+  DEBUG    root:machine.py:39 TICK:  175 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  117 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  178 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  117 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you << 117
+  DEBUG    root:machine.py:39 TICK:  181 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  184 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  185 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  117 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [117, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input:  
+  DEBUG    root:machine.py:39 TICK:  188 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  191 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you  << 32
+  DEBUG    root:machine.py:39 TICK:  194 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  197 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  198 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: r
+  DEBUG    root:machine.py:39 TICK:  201 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  114 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  204 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  114 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you r << 114
+  DEBUG    root:machine.py:39 TICK:  207 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  210 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  211 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  114 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [114, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: e
+  DEBUG    root:machine.py:39 TICK:  214 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  217 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you re << 101
+  DEBUG    root:machine.py:39 TICK:  220 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  223 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  224 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: p
+  DEBUG    root:machine.py:39 TICK:  227 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  112 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  230 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  112 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you rep << 112
+  DEBUG    root:machine.py:39 TICK:  233 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  236 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  237 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  112 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [112, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: e
+  DEBUG    root:machine.py:39 TICK:  240 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  243 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repe << 101
+  DEBUG    root:machine.py:39 TICK:  246 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  249 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  250 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: a
+  DEBUG    root:machine.py:39 TICK:  253 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  256 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repea << 97
+  DEBUG    root:machine.py:39 TICK:  259 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  262 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  263 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  97 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [97, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: t
+  DEBUG    root:machine.py:39 TICK:  266 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  116 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  269 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  116 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repeat << 116
+  DEBUG    root:machine.py:39 TICK:  272 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  275 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  276 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  116 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [116, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input:  
+  DEBUG    root:machine.py:39 TICK:  279 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  282 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repeat  << 32
+  DEBUG    root:machine.py:39 TICK:  285 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  288 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  289 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  32 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [32, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: m
+  DEBUG    root:machine.py:39 TICK:  292 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  109 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  295 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  109 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repeat m << 109
+  DEBUG    root:machine.py:39 TICK:  298 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  301 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  302 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  109 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [109, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: e
+  DEBUG    root:machine.py:39 TICK:  305 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  308 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repeat me << 101
+  DEBUG    root:machine.py:39 TICK:  311 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  314 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  315 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  101 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [101, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: ?
+  DEBUG    root:machine.py:39 TICK:  318 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:  63 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  321 PC:   4 MPC: 29 IR:  17 RSC: -1 TOS:  63 AR:   0 SB:   0 SP:  0	Opcode.OUTPUT	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:186 output: Hello, can you repeat me? << 63
+  DEBUG    root:machine.py:39 TICK:  324 PC:   5 MPC:  4 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.JMP	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  327 PC:   1 MPC: 27 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.INPUT	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  328 PC:   1 MPC: 28 IR:  16 RSC: -1 TOS:  63 AR:   0 SB:   0 SP:  0	Opcode.INPUT	Stack: [63, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:datapath.py:181 input: 
+  DEBUG    root:machine.py:39 TICK:  331 PC:   2 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [0, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  334 PC:   7 MPC:  2 IR: 128 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	Opcode.HLT	Stack: [0, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  INFO     root:machine.py:53 output_buffer: Hello, can you repeat me?
+  INFO     root:machine.py:77 End simulation

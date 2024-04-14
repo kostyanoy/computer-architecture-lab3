@@ -27,7 +27,9 @@ class DataPath:
     input_value: str = None
     alu_operation: ALU = None
 
-    def __init__(self, data_memory: list[int], stack_size: int, input_buffer: list[str]):
+    def __init__(
+        self, data_memory: list[int], stack_size: int, input_buffer: list[str]
+    ):
         assert stack_size > 0, "Stack size must be > 0"
         self.data_memory_size = len(data_memory)
         self.data_memory = data_memory
@@ -115,7 +117,7 @@ class DataPath:
         if res < 0:
             res = (MAX_UNSIGN + 1) - res
         if res > MAX_UNSIGN:
-            res %= (MAX_UNSIGN + 1)
+            res %= MAX_UNSIGN + 1
         return res
 
     # MUX signals
@@ -146,7 +148,9 @@ class DataPath:
 
     def signal_latch_stack_pointer(self):
         self.stack_pointer = self.get_mux_stack_pointer()
-        assert -1 <= self.stack_pointer < self.stack_size, f"Out of stack: {self.stack_pointer}"
+        assert (
+            -1 <= self.stack_pointer < self.stack_size
+        ), f"Out of stack: {self.stack_pointer}"
 
     def signal_latch_tos(self):
         self.stack[self.stack_pointer] = self.get_mux_stack_value()
@@ -156,7 +160,9 @@ class DataPath:
 
     # other signals
     def signal_we(self):
-        assert 0 <= self.data_address < self.data_memory_size, f"Out of memory: {self.data_address}"
+        assert (
+            0 <= self.data_address < self.data_memory_size
+        ), f"Out of memory: {self.data_address}"
         self.we = True
         self.oe = False
         self.data_memory[self.data_address] = self.get_mux_stack_data()
@@ -177,7 +183,9 @@ class DataPath:
     def signal_output(self):
         symbol = self.get_mux_stack_data()
         self.output_buffer.append(symbol)
-        logging.debug(f"output: {''.join(map(lambda x: chr(x) if x < 256 else str(x), self.output_buffer))} << {symbol}")
+        logging.debug(
+            f"output: {''.join(map(lambda x: chr(x) if x < 256 else str(x), self.output_buffer))} << {symbol}"
+        )
 
     def zero(self):
         return self.stack[self.stack_pointer] == 0

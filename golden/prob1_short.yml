@@ -1,0 +1,542 @@
+in_source: |-
+  .data:
+    sum NUMBER 0
+
+  .code:
+  start:
+      PUSH 1000 ; i
+
+  loop:
+      DEC
+      JZ end
+      DUP
+      PUSH 3
+      MOD
+      JZ loop_suc
+      DROP
+      DUP
+      PUSH 5
+      MOD
+      JZ loop_suc
+      DROP
+
+  loop_fail:
+      JMP loop
+
+  loop_suc:
+      DROP
+      DUP
+      PUSH sum
+      LOAD
+      ADD
+      PUSH sum
+      SWAP
+      POP
+      JMP loop
+
+  end:
+      DROP
+      PUSH sum
+      LOAD
+      OUTPUT
+      HLT
+in_stdin: |-
+  No
+out_mnemonics: |
+  2 - 00000040 000003E8 - Opcode.PUSH 1000
+  4 - 00000021          - Opcode.DEC
+  5 - 00000083 00000021 - Opcode.JZ end
+  7 - 00000045          - Opcode.DUP
+  8 - 00000040 00000003 - Opcode.PUSH 3
+  10 - 00000026          - Opcode.MOD
+  11 - 00000083 00000015 - Opcode.JZ loop_suc
+  13 - 00000043          - Opcode.DROP
+  14 - 00000045          - Opcode.DUP
+  15 - 00000040 00000005 - Opcode.PUSH 5
+  17 - 00000026          - Opcode.MOD
+  18 - 00000083 00000015 - Opcode.JZ loop_suc
+  20 - 00000043          - Opcode.DROP
+  21 - 00000082 00000002 - Opcode.JMP loop
+  23 - 00000043          - Opcode.DROP
+  24 - 00000045          - Opcode.DUP
+  25 - 00000040 00000000 - Opcode.PUSH sum
+  27 - 00000042          - Opcode.LOAD
+  28 - 00000022          - Opcode.ADD
+  29 - 00000040 00000000 - Opcode.PUSH sum
+  31 - 00000044          - Opcode.SWAP
+  32 - 00000041          - Opcode.POP
+  33 - 00000082 00000002 - Opcode.JMP loop
+  35 - 00000043          - Opcode.DROP
+  36 - 00000040 00000000 - Opcode.PUSH sum
+  38 - 00000042          - Opcode.LOAD
+  39 - 00000011          - Opcode.OUTPUT
+  40 - 00000080          - Opcode.HLT
+out_code:
+- 1
+- 0
+- 64
+- 1000
+- 33
+- 131
+- 33
+- 69
+- 64
+- 3
+- 38
+- 131
+- 21
+- 67
+- 69
+- 64
+- 5
+- 38
+- 131
+- 21
+- 67
+- 130
+- 2
+- 67
+- 69
+- 64
+- 0
+- 66
+- 34
+- 64
+- 0
+- 68
+- 65
+- 130
+- 2
+- 67
+- 64
+- 0
+- 66
+- 17
+- 128
+out_stdout: |
+  LoC: 41 Code bytes: 82
+  ============================================================
+
+  Instructions: 292 Ticks: 1000
+out_log: |
+  INFO     root:machine.py:73 Start simulation
+  DEBUG    root:machine.py:30 TICK:    0 PC:   0 MPC:  0 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	None	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    2 PC:   1 MPC:  9 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	Opcode.PUSH	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    3 PC:   1 MPC: 10 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	Opcode.PUSH	Stack: [-1, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    6 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  1000 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [1000, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:    9 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [999, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   12 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [999, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   13 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:  -1 AR:   0 SB: 999 SP:  1	Opcode.DUP	Stack: [999, -1, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   16 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  999 AR:   0 SB: 999 SP:  1	Opcode.PUSH	Stack: [999, 999, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   17 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB: 999 SP:  2	Opcode.PUSH	Stack: [999, 999, -1, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   20 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 999 SP:  2	Opcode.MOD	Stack: [999, 999, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   23 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  1	Opcode.JZ	Stack: [999, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   26 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  1	Opcode.DROP	Stack: [999, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   29 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  999 AR:   0 SB: 999 SP:  0	Opcode.DUP	Stack: [999, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   30 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  1	Opcode.DUP	Stack: [999, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   33 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  999 AR:   0 SB: 999 SP:  1	Opcode.PUSH	Stack: [999, 999, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   34 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 999 SP:  2	Opcode.PUSH	Stack: [999, 999, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   37 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  2	Opcode.LOAD	Stack: [999, 999, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   38 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  2	Opcode.LOAD	Stack: [999, 999, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   41 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  2	Opcode.ADD	Stack: [999, 999, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   44 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  999 AR:   0 SB: 999 SP:  1	Opcode.PUSH	Stack: [999, 999, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   45 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  2	Opcode.PUSH	Stack: [999, 999, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   48 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 999 SP:  2	Opcode.SWAP	Stack: [999, 999, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   49 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [999, 999, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   52 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [999, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   53 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [999, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   56 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [999, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   59 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  999 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [999, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   62 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  998 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [998, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   65 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  998 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [998, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   66 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 998 SP:  1	Opcode.DUP	Stack: [998, 0, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   69 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  998 AR:   0 SB: 998 SP:  1	Opcode.PUSH	Stack: [998, 998, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   70 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  999 AR:   0 SB: 998 SP:  2	Opcode.PUSH	Stack: [998, 998, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   73 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 998 SP:  2	Opcode.MOD	Stack: [998, 998, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   76 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 998 SP:  1	Opcode.JZ	Stack: [998, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   79 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 998 SP:  1	Opcode.DROP	Stack: [998, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   82 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  998 AR:   0 SB: 998 SP:  0	Opcode.DUP	Stack: [998, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   83 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 998 SP:  1	Opcode.DUP	Stack: [998, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   86 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  998 AR:   0 SB: 998 SP:  1	Opcode.PUSH	Stack: [998, 998, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   87 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 998 SP:  2	Opcode.PUSH	Stack: [998, 998, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   90 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 998 SP:  2	Opcode.MOD	Stack: [998, 998, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   93 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   3 AR:   0 SB: 998 SP:  1	Opcode.JZ	Stack: [998, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   96 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   3 AR:   0 SB: 998 SP:  1	Opcode.DROP	Stack: [998, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:   99 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  998 AR:   0 SB: 998 SP:  0	Opcode.JMP	Stack: [998, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  102 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  998 AR:   0 SB: 998 SP:  0	Opcode.DEC	Stack: [998, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  105 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  997 AR:   0 SB: 998 SP:  0	Opcode.JZ	Stack: [997, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  108 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  997 AR:   0 SB: 998 SP:  0	Opcode.DUP	Stack: [997, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  109 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   3 AR:   0 SB: 997 SP:  1	Opcode.DUP	Stack: [997, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  112 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  997 AR:   0 SB: 997 SP:  1	Opcode.PUSH	Stack: [997, 997, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  113 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 997 SP:  2	Opcode.PUSH	Stack: [997, 997, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  116 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 997 SP:  2	Opcode.MOD	Stack: [997, 997, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  119 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 997 SP:  1	Opcode.JZ	Stack: [997, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  122 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 997 SP:  1	Opcode.DROP	Stack: [997, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  125 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  997 AR:   0 SB: 997 SP:  0	Opcode.DUP	Stack: [997, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  126 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 997 SP:  1	Opcode.DUP	Stack: [997, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  129 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  997 AR:   0 SB: 997 SP:  1	Opcode.PUSH	Stack: [997, 997, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  130 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 997 SP:  2	Opcode.PUSH	Stack: [997, 997, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  133 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 997 SP:  2	Opcode.MOD	Stack: [997, 997, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  136 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 997 SP:  1	Opcode.JZ	Stack: [997, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  139 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 997 SP:  1	Opcode.DROP	Stack: [997, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  142 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  997 AR:   0 SB: 997 SP:  0	Opcode.JMP	Stack: [997, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  145 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  997 AR:   0 SB: 997 SP:  0	Opcode.DEC	Stack: [997, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  148 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  996 AR:   0 SB: 997 SP:  0	Opcode.JZ	Stack: [996, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  151 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  996 AR:   0 SB: 997 SP:  0	Opcode.DUP	Stack: [996, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  152 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 996 SP:  1	Opcode.DUP	Stack: [996, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  155 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  996 AR:   0 SB: 996 SP:  1	Opcode.PUSH	Stack: [996, 996, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  156 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 996 SP:  2	Opcode.PUSH	Stack: [996, 996, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  159 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 996 SP:  2	Opcode.MOD	Stack: [996, 996, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  162 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 996 SP:  1	Opcode.JZ	Stack: [996, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  165 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 996 SP:  1	Opcode.DROP	Stack: [996, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  168 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  996 AR:   0 SB: 996 SP:  0	Opcode.DUP	Stack: [996, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  169 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 996 SP:  1	Opcode.DUP	Stack: [996, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  172 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  996 AR:   0 SB: 996 SP:  1	Opcode.PUSH	Stack: [996, 996, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  173 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 996 SP:  2	Opcode.PUSH	Stack: [996, 996, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  176 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 996 SP:  2	Opcode.LOAD	Stack: [996, 996, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  177 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 996 SP:  2	Opcode.LOAD	Stack: [996, 996, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  180 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  999 AR:   0 SB: 996 SP:  2	Opcode.ADD	Stack: [996, 996, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  183 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  1995 AR:   0 SB: 996 SP:  1	Opcode.PUSH	Stack: [996, 1995, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  184 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  999 AR:   0 SB: 996 SP:  2	Opcode.PUSH	Stack: [996, 1995, 999, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  187 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 996 SP:  2	Opcode.SWAP	Stack: [996, 1995, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  188 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  1995 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [996, 1995, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  191 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  1995 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [996, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  192 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  1995 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [996, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  195 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  996 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [996, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  198 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  996 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [996, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  201 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  995 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [995, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  204 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  995 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [995, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  205 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  1	Opcode.DUP	Stack: [995, 0, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  208 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  995 AR:   0 SB: 995 SP:  1	Opcode.PUSH	Stack: [995, 995, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  209 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  1995 AR:   0 SB: 995 SP:  2	Opcode.PUSH	Stack: [995, 995, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  212 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 995 SP:  2	Opcode.MOD	Stack: [995, 995, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  215 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 995 SP:  1	Opcode.JZ	Stack: [995, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  218 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 995 SP:  1	Opcode.DROP	Stack: [995, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  221 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  995 AR:   0 SB: 995 SP:  0	Opcode.DUP	Stack: [995, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  222 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 995 SP:  1	Opcode.DUP	Stack: [995, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  225 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  995 AR:   0 SB: 995 SP:  1	Opcode.PUSH	Stack: [995, 995, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  226 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 995 SP:  2	Opcode.PUSH	Stack: [995, 995, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  229 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 995 SP:  2	Opcode.MOD	Stack: [995, 995, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  232 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  1	Opcode.JZ	Stack: [995, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  235 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  1	Opcode.DROP	Stack: [995, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  238 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  995 AR:   0 SB: 995 SP:  0	Opcode.DUP	Stack: [995, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  239 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  1	Opcode.DUP	Stack: [995, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  242 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  995 AR:   0 SB: 995 SP:  1	Opcode.PUSH	Stack: [995, 995, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  243 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 995 SP:  2	Opcode.PUSH	Stack: [995, 995, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  246 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  2	Opcode.LOAD	Stack: [995, 995, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  247 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  2	Opcode.LOAD	Stack: [995, 995, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  250 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  1995 AR:   0 SB: 995 SP:  2	Opcode.ADD	Stack: [995, 995, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  253 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  2990 AR:   0 SB: 995 SP:  1	Opcode.PUSH	Stack: [995, 2990, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  254 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  1995 AR:   0 SB: 995 SP:  2	Opcode.PUSH	Stack: [995, 2990, 1995, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  257 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 995 SP:  2	Opcode.SWAP	Stack: [995, 2990, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  258 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  2990 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [995, 2990, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  261 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  2990 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [995, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  262 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  2990 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [995, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  265 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  995 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [995, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  268 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  995 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [995, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  271 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  994 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [994, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  274 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  994 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [994, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  275 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 994 SP:  1	Opcode.DUP	Stack: [994, 0, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  278 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  994 AR:   0 SB: 994 SP:  1	Opcode.PUSH	Stack: [994, 994, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  279 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  2990 AR:   0 SB: 994 SP:  2	Opcode.PUSH	Stack: [994, 994, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  282 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 994 SP:  2	Opcode.MOD	Stack: [994, 994, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  285 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 994 SP:  1	Opcode.JZ	Stack: [994, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  288 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 994 SP:  1	Opcode.DROP	Stack: [994, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  291 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  994 AR:   0 SB: 994 SP:  0	Opcode.DUP	Stack: [994, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  292 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 994 SP:  1	Opcode.DUP	Stack: [994, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  295 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  994 AR:   0 SB: 994 SP:  1	Opcode.PUSH	Stack: [994, 994, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  296 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 994 SP:  2	Opcode.PUSH	Stack: [994, 994, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  299 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 994 SP:  2	Opcode.MOD	Stack: [994, 994, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  302 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   4 AR:   0 SB: 994 SP:  1	Opcode.JZ	Stack: [994, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  305 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   4 AR:   0 SB: 994 SP:  1	Opcode.DROP	Stack: [994, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  308 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  994 AR:   0 SB: 994 SP:  0	Opcode.JMP	Stack: [994, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  311 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  994 AR:   0 SB: 994 SP:  0	Opcode.DEC	Stack: [994, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  314 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  993 AR:   0 SB: 994 SP:  0	Opcode.JZ	Stack: [993, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  317 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  993 AR:   0 SB: 994 SP:  0	Opcode.DUP	Stack: [993, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  318 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   4 AR:   0 SB: 993 SP:  1	Opcode.DUP	Stack: [993, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  321 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  993 AR:   0 SB: 993 SP:  1	Opcode.PUSH	Stack: [993, 993, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  322 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 993 SP:  2	Opcode.PUSH	Stack: [993, 993, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  325 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 993 SP:  2	Opcode.MOD	Stack: [993, 993, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  328 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 993 SP:  1	Opcode.JZ	Stack: [993, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  331 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 993 SP:  1	Opcode.DROP	Stack: [993, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  334 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  993 AR:   0 SB: 993 SP:  0	Opcode.DUP	Stack: [993, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  335 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 993 SP:  1	Opcode.DUP	Stack: [993, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  338 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  993 AR:   0 SB: 993 SP:  1	Opcode.PUSH	Stack: [993, 993, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  339 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 993 SP:  2	Opcode.PUSH	Stack: [993, 993, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  342 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 993 SP:  2	Opcode.LOAD	Stack: [993, 993, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  343 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 993 SP:  2	Opcode.LOAD	Stack: [993, 993, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  346 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  2990 AR:   0 SB: 993 SP:  2	Opcode.ADD	Stack: [993, 993, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  349 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  3983 AR:   0 SB: 993 SP:  1	Opcode.PUSH	Stack: [993, 3983, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  350 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  2990 AR:   0 SB: 993 SP:  2	Opcode.PUSH	Stack: [993, 3983, 2990, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  353 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 993 SP:  2	Opcode.SWAP	Stack: [993, 3983, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  354 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  3983 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [993, 3983, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  357 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  3983 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [993, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  358 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  3983 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [993, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  361 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  993 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [993, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  364 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  993 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [993, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  367 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  992 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [992, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  370 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  992 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [992, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  371 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 992 SP:  1	Opcode.DUP	Stack: [992, 0, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  374 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  992 AR:   0 SB: 992 SP:  1	Opcode.PUSH	Stack: [992, 992, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  375 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  3983 AR:   0 SB: 992 SP:  2	Opcode.PUSH	Stack: [992, 992, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  378 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 992 SP:  2	Opcode.MOD	Stack: [992, 992, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  381 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 992 SP:  1	Opcode.JZ	Stack: [992, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  384 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 992 SP:  1	Opcode.DROP	Stack: [992, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  387 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  992 AR:   0 SB: 992 SP:  0	Opcode.DUP	Stack: [992, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  388 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 992 SP:  1	Opcode.DUP	Stack: [992, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  391 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  992 AR:   0 SB: 992 SP:  1	Opcode.PUSH	Stack: [992, 992, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  392 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 992 SP:  2	Opcode.PUSH	Stack: [992, 992, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  395 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 992 SP:  2	Opcode.MOD	Stack: [992, 992, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  398 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 992 SP:  1	Opcode.JZ	Stack: [992, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  401 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 992 SP:  1	Opcode.DROP	Stack: [992, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  404 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  992 AR:   0 SB: 992 SP:  0	Opcode.JMP	Stack: [992, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  407 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  992 AR:   0 SB: 992 SP:  0	Opcode.DEC	Stack: [992, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  410 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  991 AR:   0 SB: 992 SP:  0	Opcode.JZ	Stack: [991, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  413 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  991 AR:   0 SB: 992 SP:  0	Opcode.DUP	Stack: [991, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  414 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 991 SP:  1	Opcode.DUP	Stack: [991, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  417 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  991 AR:   0 SB: 991 SP:  1	Opcode.PUSH	Stack: [991, 991, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  418 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 991 SP:  2	Opcode.PUSH	Stack: [991, 991, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  421 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 991 SP:  2	Opcode.MOD	Stack: [991, 991, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  424 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 991 SP:  1	Opcode.JZ	Stack: [991, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  427 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 991 SP:  1	Opcode.DROP	Stack: [991, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  430 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  991 AR:   0 SB: 991 SP:  0	Opcode.DUP	Stack: [991, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  431 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 991 SP:  1	Opcode.DUP	Stack: [991, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  434 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  991 AR:   0 SB: 991 SP:  1	Opcode.PUSH	Stack: [991, 991, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  435 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 991 SP:  2	Opcode.PUSH	Stack: [991, 991, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  438 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 991 SP:  2	Opcode.MOD	Stack: [991, 991, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  441 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 991 SP:  1	Opcode.JZ	Stack: [991, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  444 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 991 SP:  1	Opcode.DROP	Stack: [991, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  447 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  991 AR:   0 SB: 991 SP:  0	Opcode.JMP	Stack: [991, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  450 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  991 AR:   0 SB: 991 SP:  0	Opcode.DEC	Stack: [991, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  453 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  990 AR:   0 SB: 991 SP:  0	Opcode.JZ	Stack: [990, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  456 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  990 AR:   0 SB: 991 SP:  0	Opcode.DUP	Stack: [990, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  457 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 990 SP:  1	Opcode.DUP	Stack: [990, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  460 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  990 AR:   0 SB: 990 SP:  1	Opcode.PUSH	Stack: [990, 990, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  461 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 990 SP:  2	Opcode.PUSH	Stack: [990, 990, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  464 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 990 SP:  2	Opcode.MOD	Stack: [990, 990, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  467 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 990 SP:  1	Opcode.JZ	Stack: [990, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  470 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 990 SP:  1	Opcode.DROP	Stack: [990, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  473 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  990 AR:   0 SB: 990 SP:  0	Opcode.DUP	Stack: [990, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  474 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 990 SP:  1	Opcode.DUP	Stack: [990, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  477 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  990 AR:   0 SB: 990 SP:  1	Opcode.PUSH	Stack: [990, 990, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  478 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 990 SP:  2	Opcode.PUSH	Stack: [990, 990, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  481 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 990 SP:  2	Opcode.LOAD	Stack: [990, 990, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  482 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 990 SP:  2	Opcode.LOAD	Stack: [990, 990, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  485 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  3983 AR:   0 SB: 990 SP:  2	Opcode.ADD	Stack: [990, 990, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  488 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  4973 AR:   0 SB: 990 SP:  1	Opcode.PUSH	Stack: [990, 4973, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  489 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  3983 AR:   0 SB: 990 SP:  2	Opcode.PUSH	Stack: [990, 4973, 3983, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  492 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 990 SP:  2	Opcode.SWAP	Stack: [990, 4973, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  493 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  4973 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [990, 4973, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  496 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  4973 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [990, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  497 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  4973 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [990, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  500 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  990 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [990, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  503 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  990 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [990, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  506 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  989 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [989, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  509 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  989 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [989, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  510 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 989 SP:  1	Opcode.DUP	Stack: [989, 0, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  513 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  989 AR:   0 SB: 989 SP:  1	Opcode.PUSH	Stack: [989, 989, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  514 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  4973 AR:   0 SB: 989 SP:  2	Opcode.PUSH	Stack: [989, 989, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  517 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 989 SP:  2	Opcode.MOD	Stack: [989, 989, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  520 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 989 SP:  1	Opcode.JZ	Stack: [989, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  523 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 989 SP:  1	Opcode.DROP	Stack: [989, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  526 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  989 AR:   0 SB: 989 SP:  0	Opcode.DUP	Stack: [989, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  527 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 989 SP:  1	Opcode.DUP	Stack: [989, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  530 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  989 AR:   0 SB: 989 SP:  1	Opcode.PUSH	Stack: [989, 989, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  531 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 989 SP:  2	Opcode.PUSH	Stack: [989, 989, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  534 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 989 SP:  2	Opcode.MOD	Stack: [989, 989, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  537 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   4 AR:   0 SB: 989 SP:  1	Opcode.JZ	Stack: [989, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  540 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   4 AR:   0 SB: 989 SP:  1	Opcode.DROP	Stack: [989, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  543 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  989 AR:   0 SB: 989 SP:  0	Opcode.JMP	Stack: [989, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  546 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  989 AR:   0 SB: 989 SP:  0	Opcode.DEC	Stack: [989, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  549 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  988 AR:   0 SB: 989 SP:  0	Opcode.JZ	Stack: [988, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  552 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  988 AR:   0 SB: 989 SP:  0	Opcode.DUP	Stack: [988, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  553 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   4 AR:   0 SB: 988 SP:  1	Opcode.DUP	Stack: [988, 4, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  556 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  988 AR:   0 SB: 988 SP:  1	Opcode.PUSH	Stack: [988, 988, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  557 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 988 SP:  2	Opcode.PUSH	Stack: [988, 988, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  560 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 988 SP:  2	Opcode.MOD	Stack: [988, 988, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  563 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 988 SP:  1	Opcode.JZ	Stack: [988, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  566 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 988 SP:  1	Opcode.DROP	Stack: [988, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  569 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  988 AR:   0 SB: 988 SP:  0	Opcode.DUP	Stack: [988, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  570 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 988 SP:  1	Opcode.DUP	Stack: [988, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  573 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  988 AR:   0 SB: 988 SP:  1	Opcode.PUSH	Stack: [988, 988, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  574 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 988 SP:  2	Opcode.PUSH	Stack: [988, 988, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  577 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 988 SP:  2	Opcode.MOD	Stack: [988, 988, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  580 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   3 AR:   0 SB: 988 SP:  1	Opcode.JZ	Stack: [988, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  583 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   3 AR:   0 SB: 988 SP:  1	Opcode.DROP	Stack: [988, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  586 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  988 AR:   0 SB: 988 SP:  0	Opcode.JMP	Stack: [988, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  589 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  988 AR:   0 SB: 988 SP:  0	Opcode.DEC	Stack: [988, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  592 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  987 AR:   0 SB: 988 SP:  0	Opcode.JZ	Stack: [987, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  595 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  987 AR:   0 SB: 988 SP:  0	Opcode.DUP	Stack: [987, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  596 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   3 AR:   0 SB: 987 SP:  1	Opcode.DUP	Stack: [987, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  599 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  987 AR:   0 SB: 987 SP:  1	Opcode.PUSH	Stack: [987, 987, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  600 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 987 SP:  2	Opcode.PUSH	Stack: [987, 987, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  603 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 987 SP:  2	Opcode.MOD	Stack: [987, 987, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  606 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 987 SP:  1	Opcode.JZ	Stack: [987, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  609 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 987 SP:  1	Opcode.DROP	Stack: [987, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  612 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  987 AR:   0 SB: 987 SP:  0	Opcode.DUP	Stack: [987, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  613 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 987 SP:  1	Opcode.DUP	Stack: [987, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  616 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  987 AR:   0 SB: 987 SP:  1	Opcode.PUSH	Stack: [987, 987, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  617 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 987 SP:  2	Opcode.PUSH	Stack: [987, 987, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  620 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 987 SP:  2	Opcode.LOAD	Stack: [987, 987, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  621 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 987 SP:  2	Opcode.LOAD	Stack: [987, 987, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  624 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  4973 AR:   0 SB: 987 SP:  2	Opcode.ADD	Stack: [987, 987, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  627 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  5960 AR:   0 SB: 987 SP:  1	Opcode.PUSH	Stack: [987, 5960, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  628 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  4973 AR:   0 SB: 987 SP:  2	Opcode.PUSH	Stack: [987, 5960, 4973, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  631 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 987 SP:  2	Opcode.SWAP	Stack: [987, 5960, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  632 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  5960 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [987, 5960, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  635 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  5960 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [987, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  636 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  5960 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [987, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  639 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  987 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [987, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  642 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  987 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [987, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  645 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  986 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [986, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  648 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  986 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [986, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  649 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 986 SP:  1	Opcode.DUP	Stack: [986, 0, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  652 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  986 AR:   0 SB: 986 SP:  1	Opcode.PUSH	Stack: [986, 986, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  653 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  5960 AR:   0 SB: 986 SP:  2	Opcode.PUSH	Stack: [986, 986, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  656 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 986 SP:  2	Opcode.MOD	Stack: [986, 986, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  659 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 986 SP:  1	Opcode.JZ	Stack: [986, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  662 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 986 SP:  1	Opcode.DROP	Stack: [986, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  665 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  986 AR:   0 SB: 986 SP:  0	Opcode.DUP	Stack: [986, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  666 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 986 SP:  1	Opcode.DUP	Stack: [986, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  669 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  986 AR:   0 SB: 986 SP:  1	Opcode.PUSH	Stack: [986, 986, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  670 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 986 SP:  2	Opcode.PUSH	Stack: [986, 986, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  673 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 986 SP:  2	Opcode.MOD	Stack: [986, 986, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  676 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 986 SP:  1	Opcode.JZ	Stack: [986, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  679 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 986 SP:  1	Opcode.DROP	Stack: [986, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  682 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  986 AR:   0 SB: 986 SP:  0	Opcode.JMP	Stack: [986, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  685 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  986 AR:   0 SB: 986 SP:  0	Opcode.DEC	Stack: [986, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  688 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  985 AR:   0 SB: 986 SP:  0	Opcode.JZ	Stack: [985, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  691 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  985 AR:   0 SB: 986 SP:  0	Opcode.DUP	Stack: [985, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  692 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 985 SP:  1	Opcode.DUP	Stack: [985, 1, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  695 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  985 AR:   0 SB: 985 SP:  1	Opcode.PUSH	Stack: [985, 985, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  696 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 985 SP:  2	Opcode.PUSH	Stack: [985, 985, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  699 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 985 SP:  2	Opcode.MOD	Stack: [985, 985, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  702 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 985 SP:  1	Opcode.JZ	Stack: [985, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  705 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 985 SP:  1	Opcode.DROP	Stack: [985, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  708 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  985 AR:   0 SB: 985 SP:  0	Opcode.DUP	Stack: [985, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  709 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 985 SP:  1	Opcode.DUP	Stack: [985, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  712 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  985 AR:   0 SB: 985 SP:  1	Opcode.PUSH	Stack: [985, 985, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  713 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 985 SP:  2	Opcode.PUSH	Stack: [985, 985, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  716 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 985 SP:  2	Opcode.MOD	Stack: [985, 985, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  719 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 985 SP:  1	Opcode.JZ	Stack: [985, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  722 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 985 SP:  1	Opcode.DROP	Stack: [985, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  725 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  985 AR:   0 SB: 985 SP:  0	Opcode.DUP	Stack: [985, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  726 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 985 SP:  1	Opcode.DUP	Stack: [985, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  729 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  985 AR:   0 SB: 985 SP:  1	Opcode.PUSH	Stack: [985, 985, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  730 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 985 SP:  2	Opcode.PUSH	Stack: [985, 985, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  733 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 985 SP:  2	Opcode.LOAD	Stack: [985, 985, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  734 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 985 SP:  2	Opcode.LOAD	Stack: [985, 985, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  737 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  5960 AR:   0 SB: 985 SP:  2	Opcode.ADD	Stack: [985, 985, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  740 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  6945 AR:   0 SB: 985 SP:  1	Opcode.PUSH	Stack: [985, 6945, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  741 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  5960 AR:   0 SB: 985 SP:  2	Opcode.PUSH	Stack: [985, 6945, 5960, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  744 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 985 SP:  2	Opcode.SWAP	Stack: [985, 6945, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  745 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  6945 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [985, 6945, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  748 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  6945 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [985, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  749 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  6945 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [985, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  752 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  985 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [985, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  755 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  985 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [985, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  758 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  984 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [984, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  761 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  984 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [984, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  762 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  1	Opcode.DUP	Stack: [984, 0, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  765 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  984 AR:   0 SB: 984 SP:  1	Opcode.PUSH	Stack: [984, 984, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  766 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  6945 AR:   0 SB: 984 SP:  2	Opcode.PUSH	Stack: [984, 984, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  769 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 984 SP:  2	Opcode.MOD	Stack: [984, 984, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  772 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  1	Opcode.JZ	Stack: [984, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  775 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  1	Opcode.DROP	Stack: [984, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  778 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  984 AR:   0 SB: 984 SP:  0	Opcode.DUP	Stack: [984, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  779 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  1	Opcode.DUP	Stack: [984, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  782 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  984 AR:   0 SB: 984 SP:  1	Opcode.PUSH	Stack: [984, 984, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  783 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 984 SP:  2	Opcode.PUSH	Stack: [984, 984, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  786 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  2	Opcode.LOAD	Stack: [984, 984, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  787 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  2	Opcode.LOAD	Stack: [984, 984, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  790 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  6945 AR:   0 SB: 984 SP:  2	Opcode.ADD	Stack: [984, 984, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  793 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  7929 AR:   0 SB: 984 SP:  1	Opcode.PUSH	Stack: [984, 7929, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  794 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  6945 AR:   0 SB: 984 SP:  2	Opcode.PUSH	Stack: [984, 7929, 6945, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  797 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 984 SP:  2	Opcode.SWAP	Stack: [984, 7929, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  798 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  7929 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [984, 7929, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  801 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  7929 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [984, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  802 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  7929 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [984, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  805 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  984 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [984, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  808 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  984 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [984, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  811 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  983 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [983, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  814 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  983 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [983, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  815 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 983 SP:  1	Opcode.DUP	Stack: [983, 0, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  818 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  983 AR:   0 SB: 983 SP:  1	Opcode.PUSH	Stack: [983, 983, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  819 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  7929 AR:   0 SB: 983 SP:  2	Opcode.PUSH	Stack: [983, 983, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  822 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 983 SP:  2	Opcode.MOD	Stack: [983, 983, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  825 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 983 SP:  1	Opcode.JZ	Stack: [983, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  828 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 983 SP:  1	Opcode.DROP	Stack: [983, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  831 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  983 AR:   0 SB: 983 SP:  0	Opcode.DUP	Stack: [983, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  832 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 983 SP:  1	Opcode.DUP	Stack: [983, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  835 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  983 AR:   0 SB: 983 SP:  1	Opcode.PUSH	Stack: [983, 983, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  836 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 983 SP:  2	Opcode.PUSH	Stack: [983, 983, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  839 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 983 SP:  2	Opcode.MOD	Stack: [983, 983, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  842 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   3 AR:   0 SB: 983 SP:  1	Opcode.JZ	Stack: [983, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  845 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   3 AR:   0 SB: 983 SP:  1	Opcode.DROP	Stack: [983, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  848 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  983 AR:   0 SB: 983 SP:  0	Opcode.JMP	Stack: [983, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  851 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  983 AR:   0 SB: 983 SP:  0	Opcode.DEC	Stack: [983, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  854 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  982 AR:   0 SB: 983 SP:  0	Opcode.JZ	Stack: [982, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  857 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  982 AR:   0 SB: 983 SP:  0	Opcode.DUP	Stack: [982, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  858 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   3 AR:   0 SB: 982 SP:  1	Opcode.DUP	Stack: [982, 3, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  861 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  982 AR:   0 SB: 982 SP:  1	Opcode.PUSH	Stack: [982, 982, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  862 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 982 SP:  2	Opcode.PUSH	Stack: [982, 982, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  865 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 982 SP:  2	Opcode.MOD	Stack: [982, 982, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  868 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   1 AR:   0 SB: 982 SP:  1	Opcode.JZ	Stack: [982, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  871 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   1 AR:   0 SB: 982 SP:  1	Opcode.DROP	Stack: [982, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  874 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  982 AR:   0 SB: 982 SP:  0	Opcode.DUP	Stack: [982, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  875 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   1 AR:   0 SB: 982 SP:  1	Opcode.DUP	Stack: [982, 1, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  878 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  982 AR:   0 SB: 982 SP:  1	Opcode.PUSH	Stack: [982, 982, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  879 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 982 SP:  2	Opcode.PUSH	Stack: [982, 982, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  882 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 982 SP:  2	Opcode.MOD	Stack: [982, 982, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  885 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 982 SP:  1	Opcode.JZ	Stack: [982, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  888 PC:  19 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 982 SP:  1	Opcode.DROP	Stack: [982, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  891 PC:  20 MPC:  4 IR: 130 RSC: -1 TOS:  982 AR:   0 SB: 982 SP:  0	Opcode.JMP	Stack: [982, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  894 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  982 AR:   0 SB: 982 SP:  0	Opcode.DEC	Stack: [982, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  897 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  981 AR:   0 SB: 982 SP:  0	Opcode.JZ	Stack: [981, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  900 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  981 AR:   0 SB: 982 SP:  0	Opcode.DUP	Stack: [981, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  901 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 981 SP:  1	Opcode.DUP	Stack: [981, 2, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  904 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  981 AR:   0 SB: 981 SP:  1	Opcode.PUSH	Stack: [981, 981, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  905 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 981 SP:  2	Opcode.PUSH	Stack: [981, 981, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  908 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 981 SP:  2	Opcode.MOD	Stack: [981, 981, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  911 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 981 SP:  1	Opcode.JZ	Stack: [981, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  914 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 981 SP:  1	Opcode.DROP	Stack: [981, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  917 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  981 AR:   0 SB: 981 SP:  0	Opcode.DUP	Stack: [981, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  918 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 981 SP:  1	Opcode.DUP	Stack: [981, 0, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  921 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  981 AR:   0 SB: 981 SP:  1	Opcode.PUSH	Stack: [981, 981, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  922 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 981 SP:  2	Opcode.PUSH	Stack: [981, 981, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  925 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 981 SP:  2	Opcode.LOAD	Stack: [981, 981, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  926 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 981 SP:  2	Opcode.LOAD	Stack: [981, 981, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  929 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  7929 AR:   0 SB: 981 SP:  2	Opcode.ADD	Stack: [981, 981, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  932 PC:  28 MPC:  9 IR:  64 RSC: -1 TOS:  8910 AR:   0 SB: 981 SP:  1	Opcode.PUSH	Stack: [981, 8910, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  933 PC:  28 MPC: 10 IR:  64 RSC: -1 TOS:  7929 AR:   0 SB: 981 SP:  2	Opcode.PUSH	Stack: [981, 8910, 7929, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  936 PC:  30 MPC: 16 IR:  68 RSC: -1 TOS:   0 AR:   0 SB: 981 SP:  2	Opcode.SWAP	Stack: [981, 8910, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  937 PC:  30 MPC: 17 IR:  68 RSC: -1 TOS:  8910 AR:   0 SB:   0 SP:  2	Opcode.SWAP	Stack: [981, 8910, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  940 PC:  31 MPC: 11 IR:  65 RSC: -1 TOS:  8910 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [981, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  941 PC:  31 MPC: 12 IR:  65 RSC: -1 TOS:  8910 AR:   0 SB:   0 SP:  2	Opcode.POP	Stack: [981, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  944 PC:  32 MPC:  4 IR: 130 RSC: -1 TOS:  981 AR:   0 SB:   0 SP:  0	Opcode.JMP	Stack: [981, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  947 PC:   3 MPC: 21 IR:  33 RSC: -1 TOS:  981 AR:   0 SB:   0 SP:  0	Opcode.DEC	Stack: [981, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  950 PC:   4 MPC:  5 IR: 131 RSC: -1 TOS:  980 AR:   0 SB:   0 SP:  0	Opcode.JZ	Stack: [980, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  953 PC:   6 MPC: 18 IR:  69 RSC: -1 TOS:  980 AR:   0 SB:   0 SP:  0	Opcode.DUP	Stack: [980, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  954 PC:   6 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 980 SP:  1	Opcode.DUP	Stack: [980, 0, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  957 PC:   7 MPC:  9 IR:  64 RSC: -1 TOS:  980 AR:   0 SB: 980 SP:  1	Opcode.PUSH	Stack: [980, 980, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  958 PC:   7 MPC: 10 IR:  64 RSC: -1 TOS:  8910 AR:   0 SB: 980 SP:  2	Opcode.PUSH	Stack: [980, 980, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  961 PC:   9 MPC: 26 IR:  38 RSC: -1 TOS:   3 AR:   0 SB: 980 SP:  2	Opcode.MOD	Stack: [980, 980, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  964 PC:  10 MPC:  5 IR: 131 RSC: -1 TOS:   2 AR:   0 SB: 980 SP:  1	Opcode.JZ	Stack: [980, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  967 PC:  12 MPC: 15 IR:  67 RSC: -1 TOS:   2 AR:   0 SB: 980 SP:  1	Opcode.DROP	Stack: [980, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  970 PC:  13 MPC: 18 IR:  69 RSC: -1 TOS:  980 AR:   0 SB: 980 SP:  0	Opcode.DUP	Stack: [980, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  971 PC:  13 MPC: 19 IR:  69 RSC: -1 TOS:   2 AR:   0 SB: 980 SP:  1	Opcode.DUP	Stack: [980, 2, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  974 PC:  14 MPC:  9 IR:  64 RSC: -1 TOS:  980 AR:   0 SB: 980 SP:  1	Opcode.PUSH	Stack: [980, 980, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  975 PC:  14 MPC: 10 IR:  64 RSC: -1 TOS:   3 AR:   0 SB: 980 SP:  2	Opcode.PUSH	Stack: [980, 980, 3, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  978 PC:  16 MPC: 26 IR:  38 RSC: -1 TOS:   5 AR:   0 SB: 980 SP:  2	Opcode.MOD	Stack: [980, 980, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  981 PC:  17 MPC:  5 IR: 131 RSC: -1 TOS:   0 AR:   0 SB: 980 SP:  1	Opcode.JZ	Stack: [980, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  984 PC:  22 MPC: 15 IR:  67 RSC: -1 TOS:   0 AR:   0 SB: 980 SP:  1	Opcode.DROP	Stack: [980, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  987 PC:  23 MPC: 18 IR:  69 RSC: -1 TOS:  980 AR:   0 SB: 980 SP:  0	Opcode.DUP	Stack: [980, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  988 PC:  23 MPC: 19 IR:  69 RSC: -1 TOS:   0 AR:   0 SB: 980 SP:  1	Opcode.DUP	Stack: [980, 0, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  991 PC:  24 MPC:  9 IR:  64 RSC: -1 TOS:  980 AR:   0 SB: 980 SP:  1	Opcode.PUSH	Stack: [980, 980, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  992 PC:  24 MPC: 10 IR:  64 RSC: -1 TOS:   5 AR:   0 SB: 980 SP:  2	Opcode.PUSH	Stack: [980, 980, 5, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  995 PC:  26 MPC: 13 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 980 SP:  2	Opcode.LOAD	Stack: [980, 980, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  996 PC:  26 MPC: 14 IR:  66 RSC: -1 TOS:   0 AR:   0 SB: 980 SP:  2	Opcode.LOAD	Stack: [980, 980, 0, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  DEBUG    root:machine.py:39 TICK:  999 PC:  27 MPC: 22 IR:  34 RSC: -1 TOS:  8910 AR:   0 SB: 980 SP:  2	Opcode.ADD	Stack: [980, 980, 8910, -1, -1]	 Return: [-1, -1, -1, -1, -1]
+  WARNING  root:machine.py:47 Limit exceeded!
+  INFO     root:machine.py:53 output_buffer: 
+  INFO     root:machine.py:77 End simulation
