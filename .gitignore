@@ -1,3 +1,5 @@
 /task-related
 /.idea
+/out
 *.out
+*.mnem

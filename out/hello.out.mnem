@@ -1,9 +1,0 @@
-14 - 0040 0000 - Opcode.PUSH str
-16 - 0045      - Opcode.DUP
-17 - 0042      - Opcode.LOAD
-18 - 0083 000A - Opcode.JZ break
-20 - 0011      - Opcode.OUTPUT
-21 - 0020      - Opcode.INC
-22 - 0082 0002 - Opcode.JMP loop
-24 - 0043      - Opcode.DROP
-25 - 0080      - Opcode.HLT
