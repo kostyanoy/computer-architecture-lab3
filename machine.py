@@ -7,7 +7,7 @@ from isa import read_code
 from microprogram import microprogram_memory
 
 
-def simulation(data: list[int], code: list[int], microprogram: list, stack_size: int, input_buffer: list[str], limit: int):
+def simulation(data: list[int], code: list[int], microprogram: list, stack_size: int, input_buffer: list[str], limit: int, full: bool = True):
     """
     Prepare datapath and control unit
 
@@ -25,8 +25,11 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
         while control_unit.current_tick() < limit:
             if control_unit.microprogram_counter == 0:
                 instructions += 1
+
             control_unit.decode_and_execute()
-            logging.debug(control_unit)
+            if full or control_unit.microprogram_counter not in [0, 1]:
+                logging.debug(control_unit)
+
     except EOFError:
         logging.warning("Input buffer is empty!")
     except StopIteration:
@@ -42,7 +45,7 @@ def simulation(data: list[int], code: list[int], microprogram: list, stack_size:
     return output, instructions, control_unit.current_tick()
 
 
-def main(code_file: str, input_file: str):
+def main(code_file: str, input_file: str, full: bool = True):
 
     STACK_SIZE = 128
     LIMIT = 1000
@@ -59,7 +62,7 @@ def main(code_file: str, input_file: str):
     code = machine_code[data_len + 1:]
 
     logging.info("Start simulation")
-    output, instructions, ticks = simulation(data, code, microprogram_memory, STACK_SIZE, input_buffer, LIMIT)
+    output, instructions, ticks = simulation(data, code, microprogram_memory, STACK_SIZE, input_buffer, LIMIT, full)
     logging.info("End simulation")
 
     print(output)
@@ -74,4 +77,4 @@ if __name__ == "__main__":
         input_file = None
     else:
         _, code_file, input_file = sys.argv
-    main(code_file, input_file)
+    main(code_file, input_file, True)
