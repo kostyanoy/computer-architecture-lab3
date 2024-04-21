@@ -40,7 +40,3 @@ after_read:
     DROP ; 0
     DROP ; str
     HLT
-
-
-
-

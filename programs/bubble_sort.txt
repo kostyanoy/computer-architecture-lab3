@@ -1,0 +1,136 @@
+.data:
+    i NUMBER 1
+    max_i NUMBER 7 ; max_i = len() - 1
+    buf BUFFER 9 ; len() + 1 as \0
+
+.code:
+    JMP start
+
+;;;; funcs
+print:
+    DUP
+    LOAD
+    JZ after_print
+    OUTPUT
+    INC
+    JMP print
+after_print:
+    RET
+
+inc_i:
+    PUSH i
+    DUP
+    LOAD
+    INC
+    POP
+    RET
+
+dec_max_i:
+    PUSH max_i
+    DUP
+    LOAD
+    DEC
+    POP
+    RET
+
+set_i:
+    PUSH i
+    PUSH 1
+    POP
+    RET
+
+load_buf_i:
+    PUSH buf
+    PUSH i
+    LOAD
+    ADD
+    DEC
+    LOAD ; buf[i]
+    RET
+
+load_buf_i+1:
+    PUSH buf
+    PUSH i
+    LOAD
+    ADD
+    LOAD ; buf[i+1]
+    RET
+
+swap:
+    PUSH buf
+    PUSH i
+    LOAD
+    DEC
+    ADD
+    CALL load_buf_i+1
+    PUSH buf
+    PUSH i
+    LOAD
+    ADD
+    CALL load_buf_i
+    POP ; buf[i] -> buf[j]
+    POP ; buf[j] -> buf[i]
+    RET
+
+check_i:
+    PUSH max_i
+    LOAD
+    PUSH i
+    LOAD
+    DIV
+    RET
+
+;;;; start
+start:
+    PUSH buf
+
+read:
+    DUP
+    INPUT
+    JZ after_read
+    POP
+    INC
+    JMP read
+after_read:
+    DROP ; 0
+    DROP ; dupped buf
+    DROP ; buf
+
+outer_loop:
+    PUSH max_i
+    LOAD
+    JZ after_outer
+    DROP
+
+inner_loop:
+    CALL check_i
+    JZ after_inner
+    DROP
+
+    ; check if buf[i] >= buf[j] and swap
+    CALL load_buf_i
+    CALL load_buf_i+1
+    DIV
+    JZ after_swap
+    CALL swap
+
+after_swap:
+    DROP
+    CALL inc_i
+    JMP inner_loop
+
+after_inner:
+    DROP ; 0
+    CALL dec_max_i
+    CALL set_i
+    JMP outer_loop
+
+after_outer:
+    DROP ; 0
+    PUSH buf
+    CALL print
+    DROP ; 0
+    DROP ; buf
+    HLT
+
+

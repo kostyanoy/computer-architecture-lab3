@@ -15,7 +15,3 @@ loop:
 break:
     DROP
     HLT
-
-
-
-
