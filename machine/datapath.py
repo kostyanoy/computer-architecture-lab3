@@ -1,12 +1,12 @@
 import logging
 
-from isa import MAX_UNSIGN
-from microprogram import MUX, ALU
+from machine.cache import Cache
+from machine.isa import MAX_UNSIGN
+from machine.microprogram import MUX, ALU
 
 
 class DataPath:
-    data_memory_size: int = None
-    data_memory: list[int] = None
+    cache: Cache = None
     data_address: int = None
     stack_size: int = None
     stack: list[int] = None
@@ -27,12 +27,9 @@ class DataPath:
     input_value: str = None
     alu_operation: ALU = None
 
-    def __init__(
-        self, data_memory: list[int], stack_size: int, input_buffer: list[str]
-    ):
+    def __init__(self, cache: Cache, stack_size: int, input_buffer: list[str]):
         assert stack_size > 0, "Stack size must be > 0"
-        self.data_memory_size = len(data_memory)
-        self.data_memory = data_memory
+        self.cache = cache
         self.data_address = 0
         self.stack_size = stack_size
         self.stack = [-1] * stack_size
@@ -45,7 +42,7 @@ class DataPath:
     def get_mux_stack_value(self):
         if self.mux_stack_value == MUX.STACK_VALUE_DATA:
             assert self.oe, "No output enable signal"
-            return self.data_memory[self.data_address]
+            return self.cache.get_line()
         elif self.mux_stack_value == MUX.STACK_VALUE_IMMEDIATE:
             return self.immediate_value
         elif self.mux_stack_value == MUX.STACK_VALUE_INPUT:
@@ -107,9 +104,15 @@ class DataPath:
         elif self.alu_operation == ALU.MUL:
             res = right * left
         elif self.alu_operation == ALU.DIV:
-            res = right // left
+            if left == 0:
+                res = -1
+            else:
+                res = right // left
         elif self.alu_operation == ALU.MOD:
-            res = right % left
+            if left == 0:
+                res = -1
+            else:
+                res = right % left
         else:
             raise ValueError(f"Wrong alu_operation value: {self.alu_operation}")
 
@@ -142,6 +145,7 @@ class DataPath:
     # latch signals
     def signal_latch_data_address(self):
         self.data_address = self.get_mux_stack_data()
+        self.cache.cache_address = self.data_address
 
     def signal_latch_stack_buffer(self):
         self.stack_buffer = self.get_mux_stack_data()
@@ -160,12 +164,8 @@ class DataPath:
 
     # other signals
     def signal_we(self):
-        assert (
-            0 <= self.data_address < self.data_memory_size
-        ), f"Out of memory: {self.data_address}"
         self.we = True
         self.oe = False
-        self.data_memory[self.data_address] = self.get_mux_stack_data()
 
     def signal_oe(self):
         self.oe = True

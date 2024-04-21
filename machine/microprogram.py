@@ -1,6 +1,6 @@
 from enum import Enum
 
-from isa import Opcode
+from machine.isa import Opcode
 
 
 class Latch(Enum):
@@ -14,6 +14,9 @@ class Latch(Enum):
     PC = 7
     IR = 8
     MPC = 9
+    NMPC = 10
+    # DATA_LINE = 11
+    # PROG_LINE = 12
 
 
 class MUX(Enum):
@@ -32,7 +35,7 @@ class MUX(Enum):
     ALU_RIGHT_STACK = 23
 
     TYPE_PC_ZERO = 30  # if zero -> jump else -> inc
-    TYPE_PC_MPC = 31  # default -> sets MUX.PC_ by value
+    TYPE_PC_MPC = 31  # default -> sets PC by value
 
     PC_INC = 40
     PC_RS = 41
@@ -41,6 +44,11 @@ class MUX(Enum):
     MPC_ZERO = 50
     MPC_INC = 51
     MPC_ADDR = 52
+    MPC_NEXT = 53
+    MPC_DATA_CACHE_READ_FETCH = 54
+    MPC_DATA_CACHE_WRITE_FETCH = 55
+    MPC_PROG_CACHE_READ_FETCH = 56
+    # MPC_PROG_CACHE_WRITE_FETCH = 57
 
     SP_INC = 60
     SP_DEC = 61
@@ -51,6 +59,18 @@ class MUX(Enum):
 
     DATA_TOS = 80
     DATA_SOS = 81
+
+    # DATA_CACHE_MEMORY = 90
+    # DATA_CACHE_PROC = 91
+    #
+    # PROGRAM_CACHE_MEMORY = 100
+    # PROGRAM_CACHE_PROC = 101
+
+    MPC_TYPE_NEXT = 110  # default -> sets MPC by value
+    MPC_TYPE_READY = 111  # if ready -> next_mpc else data_fetch
+
+    READY_DATA = 120
+    READY_PROG = 121
 
 
 class ALU(Enum):
@@ -71,6 +91,13 @@ class IO(Enum):
     OUTPUT = 1
 
 
+class Cache_Fetch(Enum):
+    DATA_READ = 0
+    DATA_WRITE = 1
+    PROG_READ = 2
+    # PROG_WRITE = 3
+
+
 class Halt:
     pass
 
@@ -78,27 +105,41 @@ class Halt:
 # instruction address in microprogram memory (!)
 class MPType(Enum):
     INSTRUCTION_FETCH = 0
-    HLT = 2
-    NOP = 3
-    JMP = 4
-    JZ = 5
-    CALL = 6
-    RET = 8
-    PUSH = 9
-    POP = 11
-    LOAD = 13
-    DROP = 15
-    SWAP = 16
-    DUP = 18
-    INC = 20
-    DEC = 21
-    ADD = 22
-    SUB = 23
-    MUL = 24
-    DIV = 25
-    MOD = 26
-    INPUT = 27
-    OUTPUT = 29
+    DATA_CACHE_READ_FETCH = 3
+    DATA_CACHE_WRITE_FETCH = 4
+    PROG_CACHE_READ_FETCH = 5
+    # PROG_CACHE_WRITE_FETCH = ???
+    HLT = 6
+    NOP = 7
+    JMP = 8
+    JZ = 10
+    CALL = 12
+    RET = 14
+    PUSH = 15
+    POP = 17
+    LOAD = 20
+    DROP = 23
+    SWAP = 24
+    DUP = 26
+    INC = 28
+    DEC = 29
+    ADD = 30
+    SUB = 31
+    MUL = 32
+    DIV = 33
+    MOD = 34
+    INPUT = 35
+    OUTPUT = 37
+
+
+mp_values = [e.value for e in MPType]
+
+
+def get_mp_type(ind: int):
+    assert ind >= 0
+    while ind not in mp_values:
+        ind -= 1
+    return MPType(ind)
 
 
 def opcode_to_MPType(opcode: int):
@@ -151,24 +192,47 @@ def opcode_to_MPType(opcode: int):
 # each array element is an active signals
 microprogram_memory = [
     # 0 instruction fetch
+    [Latch.MPC, MUX.MPC_PROG_CACHE_READ_FETCH, Latch.NMPC],
     [Latch.MPC, MUX.MPC_INC, MUX.PC_INC, Latch.PC, Latch.IR],
     [Latch.MPC, MUX.MPC_ADDR],
-    # 2 HLT = 0b10000000
+    # 3 data cache read fetch
+    [
+        Latch.MPC,
+        MUX.READY_DATA,
+        MUX.MPC_TYPE_READY,
+        Cache_Fetch.DATA_READ,
+        DataMemory.OE,
+    ],
+    # 4 data cache write fetch
+    [
+        Latch.MPC,
+        MUX.READY_DATA,
+        MUX.MPC_TYPE_READY,
+        Cache_Fetch.DATA_WRITE,
+        DataMemory.WE,
+    ],
+    # 5 prog cache read fetch
+    [Latch.MPC, MUX.READY_PROG, MUX.MPC_TYPE_READY, Cache_Fetch.PROG_READ],
+    # ??? prog cache write fetch
+    # [Latch.MPC, MUX.READY_PROG, MUX.MPC_TYPE_READY, Cache_Fetch.PROG_WRITE],
+    # 6 HLT = 0b10000000
     [Halt()],
-    # 3 NOP = 0b10000001
+    # 7 NOP = 0b10000001
     [Latch.MPC, MUX.MPC_ZERO],
-    # 4 JMP = 0b10000010
+    # 8 JMP = 0b10000010
+    [Latch.MPC, MUX.MPC_PROG_CACHE_READ_FETCH, Latch.NMPC],
     [Latch.MPC, MUX.MPC_ZERO, MUX.PC_JUMP, Latch.PC],
-    # 5 JZ = 0b10000011
+    # 10 JZ = 0b10000011
+    [Latch.MPC, MUX.MPC_PROG_CACHE_READ_FETCH, Latch.NMPC],
     [Latch.MPC, MUX.MPC_ZERO, MUX.TYPE_PC_ZERO, Latch.PC],
-    # 6 CALL = 0b10000100
-    [Latch.MPC, MUX.MPC_INC, MUX.RSP_INC, Latch.RSP],
+    # 12 CALL = 0b10000100
+    [Latch.MPC, MUX.MPC_PROG_CACHE_READ_FETCH, Latch.NMPC, MUX.RSP_INC, Latch.RSP],
     [Latch.MPC, MUX.MPC_ZERO, MUX.PC_JUMP, Latch.PC, Latch.RS],
-    # 8 RET = 0b10000101
+    # 14 RET = 0b10000101
     [Latch.MPC, MUX.MPC_ZERO, MUX.PC_RS, Latch.PC, MUX.RSP_DEC, Latch.RSP],
     #
-    # 9 PUSH = 0b01000000
-    [Latch.MPC, MUX.MPC_INC, MUX.SP_INC, Latch.SP],
+    # 15 PUSH = 0b01000000
+    [Latch.MPC, MUX.MPC_PROG_CACHE_READ_FETCH, Latch.NMPC, MUX.SP_INC, Latch.SP],
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -177,15 +241,17 @@ microprogram_memory = [
         MUX.STACK_VALUE_IMMEDIATE,
         Latch.TOS,
     ],
-    # 11 POP = 0b01000001
+    # 17 POP = 0b01000001
     [Latch.MPC, MUX.MPC_INC, MUX.DATA_SOS, Latch.DA],
-    [Latch.MPC, MUX.MPC_ZERO, MUX.DATA_TOS, DataMemory.WE, MUX.SP_DDEC, Latch.SP],
-    # 13 LOAD = 0b01000010
+    [Latch.MPC, MUX.MPC_DATA_CACHE_WRITE_FETCH, Latch.NMPC, MUX.DATA_TOS],
+    [Latch.MPC, MUX.MPC_ZERO, MUX.SP_DDEC, Latch.SP],
+    # 20 LOAD = 0b01000010
     [Latch.MPC, MUX.MPC_INC, MUX.DATA_TOS, Latch.DA],
-    [Latch.MPC, MUX.MPC_ZERO, DataMemory.OE, MUX.STACK_VALUE_DATA, Latch.TOS],
-    # 15 DROP = 0b01000011
+    [Latch.MPC, MUX.MPC_DATA_CACHE_READ_FETCH, Latch.NMPC],
+    [Latch.MPC, MUX.MPC_ZERO, MUX.STACK_VALUE_DATA, Latch.TOS],
+    # 23 DROP = 0b01000011
     [Latch.MPC, MUX.MPC_ZERO, MUX.SP_DEC, Latch.SP],
-    # 16 SWAP = 0b01000100
+    # 24 SWAP = 0b01000100
     [
         Latch.MPC,
         MUX.MPC_INC,
@@ -198,11 +264,11 @@ microprogram_memory = [
         Latch.TOS,
     ],
     [Latch.MPC, MUX.MPC_ZERO, MUX.STACK_VALUE_SB, Latch.SOS],
-    # 18 DUP = 0b01000101
+    # 26 DUP = 0b01000101
     [Latch.MPC, MUX.MPC_INC, MUX.DATA_TOS, Latch.SB, MUX.SP_INC, Latch.SP],
     [Latch.MPC, MUX.MPC_ZERO, MUX.STACK_VALUE_SB, Latch.TOS],
     #
-    # 20 INC = 0b00100000
+    # 28 INC = 0b00100000
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -213,7 +279,7 @@ microprogram_memory = [
         MUX.STACK_VALUE_ALU,
         Latch.TOS,
     ],
-    # 21 DEC = 0b00100001
+    # 29 DEC = 0b00100001
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -224,7 +290,7 @@ microprogram_memory = [
         MUX.STACK_VALUE_ALU,
         Latch.TOS,
     ],
-    # 22 ADD = 0b00100010
+    # 30 ADD = 0b00100010
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -237,7 +303,7 @@ microprogram_memory = [
         MUX.SP_DEC,
         Latch.SP,
     ],
-    # 23 SUB = 0b00100011
+    # 31 SUB = 0b00100011
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -250,7 +316,7 @@ microprogram_memory = [
         MUX.SP_DEC,
         Latch.SP,
     ],
-    # 24 MUL = 0b00100100
+    # 32 MUL = 0b00100100
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -263,7 +329,7 @@ microprogram_memory = [
         MUX.SP_DEC,
         Latch.SP,
     ],
-    # 25 DIV = 0b00100101
+    # 33 DIV = 0b00100101
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -276,7 +342,7 @@ microprogram_memory = [
         MUX.SP_DEC,
         Latch.SP,
     ],
-    # 26 MOD = 0b00100110
+    # 34 MOD = 0b00100110
     [
         Latch.MPC,
         MUX.MPC_ZERO,
@@ -290,9 +356,9 @@ microprogram_memory = [
         Latch.SP,
     ],
     #
-    # 27 INPUT = 0b00010000
+    # 35 INPUT = 0b00010000
     [Latch.MPC, MUX.MPC_INC, MUX.SP_INC, Latch.SP],
     [Latch.MPC, MUX.MPC_ZERO, IO.INPUT, MUX.STACK_VALUE_INPUT, Latch.TOS],
-    # 29 OUTPUT = 0b00010001
+    # 37 OUTPUT = 0b00010001
     [Latch.MPC, MUX.MPC_ZERO, MUX.DATA_TOS, IO.OUTPUT, MUX.SP_DEC, Latch.SP],
 ]

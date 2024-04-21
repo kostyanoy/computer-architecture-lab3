@@ -2,10 +2,10 @@
 import struct
 from enum import Enum
 
-
-MIN_SIGN = -(2**31)
-MAX_SIGN = 2**31 - 1
-MAX_UNSIGN = 2**32 - 1
+BITS = 32
+MIN_SIGN = -(2 ** (BITS - 1))
+MAX_SIGN = 2 ** (BITS - 1) - 1
+MAX_UNSIGN = 2**BITS - 1
 
 
 class Opcode(Enum):
@@ -47,6 +47,9 @@ class Opcode(Enum):
     NUMBER = 0b00001000
     STRING = 0b00001001
     BUFFER = 0b00001010
+
+
+opcode_values = [e.value for e in Opcode]
 
 
 def write_code(target: str, code: list[int]):

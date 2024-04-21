@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-import sys
+import argparse
 
-from isa import Opcode, write_code, MIN_SIGN, MAX_SIGN, MAX_UNSIGN
+from machine.isa import Opcode, write_code, MIN_SIGN, MAX_SIGN, MAX_UNSIGN, BITS
 
 
 def get_meaningful_token(line: str) -> str:
@@ -162,12 +162,16 @@ def main(source: str, target: str, target_mnem: str = None):
                 f.write(line + "\n")
 
     write_code(target, code)
-    print("LoC:", len(text.split("\n")), "Code bytes:", len(code) * 2)
+    print("LoC:", len(text.split("\n")), "Code bytes:", len(code) * BITS // 8)
 
 
 if __name__ == "__main__":
-    assert (
-        len(sys.argv) == 3
-    ), r"Wrong arguments: .\translator.py <input_file> <output_file>"
-    _, source, target = sys.argv
-    main(source, target, target + ".mnem")
+    parser = argparse.ArgumentParser(description="Трансляция кода")
+    parser.add_argument("source_file", help="Имя файла с кодом")
+    parser.add_argument("target_file", help="Имя выходного файла")
+
+    args = parser.parse_args()
+
+    MNEMONIC_FILE = args.target_file + ".mnem"
+
+    main(args.source_file, args.target_file, MNEMONIC_FILE)
