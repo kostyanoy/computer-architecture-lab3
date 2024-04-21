@@ -1,0 +1,853 @@
+in_source: |-
+  .data:
+      i NUMBER 1
+      max_i NUMBER 7 ; max_i = len() - 1
+      buf BUFFER 9 ; len() + 1 as \0
+
+  .code:
+      JMP start
+
+  ;;;; funcs
+  print:
+      DUP
+      LOAD
+      JZ after_print
+      OUTPUT
+      INC
+      JMP print
+  after_print:
+      RET
+
+  inc_i:
+      PUSH i
+      DUP
+      LOAD
+      INC
+      POP
+      RET
+
+  dec_max_i:
+      PUSH max_i
+      DUP
+      LOAD
+      DEC
+      POP
+      RET
+
+  set_i:
+      PUSH i
+      PUSH 1
+      POP
+      RET
+
+  load_buf_i:
+      PUSH buf
+      PUSH i
+      LOAD
+      ADD
+      DEC
+      LOAD ; buf[i]
+      RET
+
+  load_buf_i+1:
+      PUSH buf
+      PUSH i
+      LOAD
+      ADD
+      LOAD ; buf[i+1]
+      RET
+
+  swap:
+      PUSH buf
+      PUSH i
+      LOAD
+      DEC
+      ADD
+      CALL load_buf_i+1
+      PUSH buf
+      PUSH i
+      LOAD
+      ADD
+      CALL load_buf_i
+      POP ; buf[i] -> buf[j]
+      POP ; buf[j] -> buf[i]
+      RET
+
+  check_i:
+      PUSH max_i
+      LOAD
+      PUSH i
+      LOAD
+      DIV
+      RET
+
+  ;;;; start
+  start:
+      PUSH buf
+
+  read:
+      DUP
+      INPUT
+      JZ after_read
+      POP
+      INC
+      JMP read
+  after_read:
+      DROP ; 0
+      DROP ; dupped buf
+      DROP ; buf
+
+  outer_loop:
+      PUSH max_i
+      LOAD
+      JZ after_outer
+      DROP
+
+  inner_loop:
+      CALL check_i
+      JZ after_inner
+      DROP
+
+      ; check if buf[i] >= buf[j] and swap
+      CALL load_buf_i
+      CALL load_buf_i+1
+      DIV
+      JZ after_swap
+      CALL swap
+
+  after_swap:
+      DROP
+      CALL inc_i
+      JMP inner_loop
+
+  after_inner:
+      DROP ; 0
+      CALL dec_max_i
+      CALL set_i
+      JMP outer_loop
+
+  after_outer:
+      DROP ; 0
+      PUSH buf
+      CALL print
+      DROP ; 0
+      DROP ; buf
+      HLT
+in_stdin: |-
+  bhgedacf
+out_mnemonics: |
+  12 - 00000082 0000004C - Opcode.JMP start
+  14 - 00000045          - Opcode.DUP
+  15 - 00000042          - Opcode.LOAD
+  16 - 00000083 0000000A - Opcode.JZ after_print
+  18 - 00000011          - Opcode.OUTPUT
+  19 - 00000020          - Opcode.INC
+  20 - 00000082 00000002 - Opcode.JMP print
+  22 - 00000085          - Opcode.RET
+  23 - 00000040 00000000 - Opcode.PUSH i
+  25 - 00000045          - Opcode.DUP
+  26 - 00000042          - Opcode.LOAD
+  27 - 00000020          - Opcode.INC
+  28 - 00000041          - Opcode.POP
+  29 - 00000085          - Opcode.RET
+  30 - 00000040 00000001 - Opcode.PUSH max_i
+  32 - 00000045          - Opcode.DUP
+  33 - 00000042          - Opcode.LOAD
+  34 - 00000021          - Opcode.DEC
+  35 - 00000041          - Opcode.POP
+  36 - 00000085          - Opcode.RET
+  37 - 00000040 00000000 - Opcode.PUSH i
+  39 - 00000040 00000001 - Opcode.PUSH 1
+  41 - 00000041          - Opcode.POP
+  42 - 00000085          - Opcode.RET
+  43 - 00000040 00000002 - Opcode.PUSH buf
+  45 - 00000040 00000000 - Opcode.PUSH i
+  47 - 00000042          - Opcode.LOAD
+  48 - 00000022          - Opcode.ADD
+  49 - 00000021          - Opcode.DEC
+  50 - 00000042          - Opcode.LOAD
+  51 - 00000085          - Opcode.RET
+  52 - 00000040 00000002 - Opcode.PUSH buf
+  54 - 00000040 00000000 - Opcode.PUSH i
+  56 - 00000042          - Opcode.LOAD
+  57 - 00000022          - Opcode.ADD
+  58 - 00000042          - Opcode.LOAD
+  59 - 00000085          - Opcode.RET
+  60 - 00000040 00000002 - Opcode.PUSH buf
+  62 - 00000040 00000000 - Opcode.PUSH i
+  64 - 00000042          - Opcode.LOAD
+  65 - 00000021          - Opcode.DEC
+  66 - 00000022          - Opcode.ADD
+  67 - 00000084 00000028 - Opcode.CALL load_buf_i+1
+  69 - 00000040 00000002 - Opcode.PUSH buf
+  71 - 00000040 00000000 - Opcode.PUSH i
+  73 - 00000042          - Opcode.LOAD
+  74 - 00000022          - Opcode.ADD
+  75 - 00000084 0000001F - Opcode.CALL load_buf_i
+  77 - 00000041          - Opcode.POP
+  78 - 00000041          - Opcode.POP
+  79 - 00000085          - Opcode.RET
+  80 - 00000040 00000001 - Opcode.PUSH max_i
+  82 - 00000042          - Opcode.LOAD
+  83 - 00000040 00000000 - Opcode.PUSH i
+  85 - 00000042          - Opcode.LOAD
+  86 - 00000025          - Opcode.DIV
+  87 - 00000085          - Opcode.RET
+  88 - 00000040 00000002 - Opcode.PUSH buf
+  90 - 00000045          - Opcode.DUP
+  91 - 00000010          - Opcode.INPUT
+  92 - 00000083 00000056 - Opcode.JZ after_read
+  94 - 00000041          - Opcode.POP
+  95 - 00000020          - Opcode.INC
+  96 - 00000082 0000004E - Opcode.JMP read
+  98 - 00000043          - Opcode.DROP
+  99 - 00000043          - Opcode.DROP
+  100 - 00000043          - Opcode.DROP
+  101 - 00000040 00000001 - Opcode.PUSH max_i
+  103 - 00000042          - Opcode.LOAD
+  104 - 00000083 00000079 - Opcode.JZ after_outer
+  106 - 00000043          - Opcode.DROP
+  107 - 00000084 00000044 - Opcode.CALL check_i
+  109 - 00000083 00000072 - Opcode.JZ after_inner
+  111 - 00000043          - Opcode.DROP
+  112 - 00000084 0000001F - Opcode.CALL load_buf_i
+  114 - 00000084 00000028 - Opcode.CALL load_buf_i+1
+  116 - 00000025          - Opcode.DIV
+  117 - 00000083 0000006D - Opcode.JZ after_swap
+  119 - 00000084 00000030 - Opcode.CALL swap
+  121 - 00000043          - Opcode.DROP
+  122 - 00000084 0000000B - Opcode.CALL inc_i
+  124 - 00000082 0000005F - Opcode.JMP inner_loop
+  126 - 00000043          - Opcode.DROP
+  127 - 00000084 00000012 - Opcode.CALL dec_max_i
+  129 - 00000084 00000019 - Opcode.CALL set_i
+  131 - 00000082 00000059 - Opcode.JMP outer_loop
+  133 - 00000043          - Opcode.DROP
+  134 - 00000040 00000002 - Opcode.PUSH buf
+  136 - 00000084 00000002 - Opcode.CALL print
+  138 - 00000043          - Opcode.DROP
+  139 - 00000043          - Opcode.DROP
+  140 - 00000080          - Opcode.HLT
+out_code:
+- 11
+- 1
+- 7
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 130
+- 76
+- 69
+- 66
+- 131
+- 10
+- 17
+- 32
+- 130
+- 2
+- 133
+- 64
+- 0
+- 69
+- 66
+- 32
+- 65
+- 133
+- 64
+- 1
+- 69
+- 66
+- 33
+- 65
+- 133
+- 64
+- 0
+- 64
+- 1
+- 65
+- 133
+- 64
+- 2
+- 64
+- 0
+- 66
+- 34
+- 33
+- 66
+- 133
+- 64
+- 2
+- 64
+- 0
+- 66
+- 34
+- 66
+- 133
+- 64
+- 2
+- 64
+- 0
+- 66
+- 33
+- 34
+- 132
+- 40
+- 64
+- 2
+- 64
+- 0
+- 66
+- 34
+- 132
+- 31
+- 65
+- 65
+- 133
+- 64
+- 1
+- 66
+- 64
+- 0
+- 66
+- 37
+- 133
+- 64
+- 2
+- 69
+- 16
+- 131
+- 86
+- 65
+- 32
+- 130
+- 78
+- 67
+- 67
+- 67
+- 64
+- 1
+- 66
+- 131
+- 121
+- 67
+- 132
+- 68
+- 131
+- 114
+- 67
+- 132
+- 31
+- 132
+- 40
+- 37
+- 131
+- 109
+- 132
+- 48
+- 67
+- 132
+- 11
+- 130
+- 95
+- 67
+- 132
+- 18
+- 132
+- 25
+- 130
+- 89
+- 67
+- 64
+- 2
+- 132
+- 2
+- 67
+- 67
+- 128
+out_stdout: |
+  LoC: 134 Code bytes: 564
+  ============================================================
+  abcdefgh
+  Instructions: 1755 Ticks: 17292
+out_log: |
+  INFO     root:simulation.py:103 Start simulation
+  DEBUG    root:simulation.py:40 [ 0: None         ] TICK:    0 PC:   0 MPC:  0 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    1 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    2 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 9 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    3 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 8 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    4 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 7 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    5 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 6 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    6 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 5 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    7 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 4 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    8 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 3 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    9 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 2 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:   10 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 1 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:   11 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 1: Opcode.JMP   ] TICK:   13 PC:   1 MPC:  2 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 1: Opcode.JMP   ] TICK:   14 PC:   1 MPC:  8 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	JMP
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 1: Opcode.JMP   ] TICK:   15 PC:   1 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [ 1: Opcode.JMP   ] TICK:   16 PC:   1 MPC:  9 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	JMP
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   18 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   19 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 9 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   20 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 8 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   21 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 7 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   22 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 6 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   23 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 5 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   24 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 4 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   25 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 3 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   26 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 2 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   27 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [  0|130|U] [  0| 76|U] [  0| 69|U] [  0| 66|U] [  0|131|U] [  0| 10|U] [  0| 17|U] [  0| 32|U] Ticks_left: 1 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [76: Opcode.RET   ] TICK:   28 PC:  76 MPC:  5 IR: 130 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [77: Opcode.PUSH  ] TICK:   30 PC:  77 MPC:  2 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [77: Opcode.PUSH  ] TICK:   31 PC:  77 MPC: 15 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PUSH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [77: Opcode.PUSH  ] TICK:   32 PC:  77 MPC:  5 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [77: Opcode.PUSH  ] TICK:   33 PC:  77 MPC: 16 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	PUSH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   35 PC:  78 MPC:  5 IR:  64 RSC: -1 TOS:   2 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   37 PC:  79 MPC:  2 IR:  69 RSC: -1 TOS:   2 AR:   0 SB:   0 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   38 PC:  79 MPC: 26 IR:  69 RSC: -1 TOS:   2 AR:   0 SB:   0 SP:  0	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   39 PC:  79 MPC: 27 IR:  69 RSC: -1 TOS:  -1 AR:   0 SB:   2 SP:  1	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   41 PC:  79 MPC:  5 IR:  69 RSC: -1 TOS:   2 AR:   0 SB:   2 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:   43 PC:  80 MPC:  2 IR:  16 RSC: -1 TOS:   2 AR:   0 SB:   2 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:   44 PC:  80 MPC: 35 IR:  16 RSC: -1 TOS:   2 AR:   0 SB:   2 SP:  1	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:   45 PC:  80 MPC: 36 IR:  16 RSC: -1 TOS:  -1 AR:   0 SB:   2 SP:  2	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:datapath.py:181 input: b
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:   47 PC:  80 MPC:  5 IR:  16 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:   49 PC:  81 MPC:  2 IR: 131 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:   50 PC:  81 MPC: 10 IR: 131 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:   51 PC:  81 MPC:  5 IR: 131 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:   52 PC:  81 MPC: 11 IR: 131 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [82: 86           ] TICK:   54 PC:  82 MPC:  5 IR: 131 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:   56 PC:  83 MPC:  2 IR:  65 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:   57 PC:  83 MPC: 17 IR:  65 RSC: -1 TOS:  98 AR:   0 SB:   2 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:   58 PC:  83 MPC: 18 IR:  65 RSC: -1 TOS:  98 AR:   2 SB:   2 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:   59 PC:  83 MPC:  4 IR:  65 RSC: -1 TOS:  98 AR:   2 SB:   2 SP:  2	DATA_CACHE_WRITE_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:   60 PC:  83 MPC: 19 IR:  65 RSC: -1 TOS:  98 AR:   2 SB:   2 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:   62 PC:  83 MPC:  5 IR:  65 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   64 PC:  84 MPC:  2 IR:  32 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   65 PC:  84 MPC: 28 IR:  32 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  0	INC
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   67 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   68 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 9 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   69 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 8 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   70 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 7 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   71 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 6 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   72 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 5 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   73 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 4 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   74 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 3 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   75 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 2 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   76 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [  9| 64|U] [  9|  2|U] [  9| 69|U] [  9| 16|U] Ticks_left: 1 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:   77 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:   79 PC:  85 MPC:  2 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:   80 PC:  85 MPC:  8 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	JMP
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:   81 PC:  85 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:   82 PC:  85 MPC:  9 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	JMP
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   84 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 0 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   85 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 9 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   86 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 8 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   87 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 7 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   88 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 6 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   89 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 5 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   90 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 4 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   91 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 3 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   92 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 2 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   93 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 11| 67|U] [ 11| 64|U] [ 11|  1|U] [ 11| 66|U] [ 10|130|U] [ 10| 78|U] [ 10| 67|U] [ 10| 67|U] Ticks_left: 1 Ready: False
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:   94 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   96 PC:  79 MPC:  2 IR:  69 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   97 PC:  79 MPC: 26 IR:  69 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:   98 PC:  79 MPC: 27 IR:  69 RSC: -1 TOS:   2 AR:   2 SB:   3 SP:  1	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  100 PC:  79 MPC:  5 IR:  69 RSC: -1 TOS:   3 AR:   2 SB:   3 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  102 PC:  80 MPC:  2 IR:  16 RSC: -1 TOS:   3 AR:   2 SB:   3 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  103 PC:  80 MPC: 35 IR:  16 RSC: -1 TOS:   3 AR:   2 SB:   3 SP:  1	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  104 PC:  80 MPC: 36 IR:  16 RSC: -1 TOS:  98 AR:   2 SB:   3 SP:  2	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:datapath.py:181 input: h
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  106 PC:  80 MPC:  5 IR:  16 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  108 PC:  81 MPC:  2 IR: 131 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  109 PC:  81 MPC: 10 IR: 131 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  110 PC:  81 MPC:  5 IR: 131 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  111 PC:  81 MPC: 11 IR: 131 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [82: 86           ] TICK:  113 PC:  82 MPC:  5 IR: 131 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  115 PC:  83 MPC:  2 IR:  65 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  116 PC:  83 MPC: 17 IR:  65 RSC: -1 TOS:  104 AR:   2 SB:   3 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  117 PC:  83 MPC: 18 IR:  65 RSC: -1 TOS:  104 AR:   3 SB:   3 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  118 PC:  83 MPC:  4 IR:  65 RSC: -1 TOS:  104 AR:   3 SB:   3 SP:  2	DATA_CACHE_WRITE_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  119 PC:  83 MPC: 19 IR:  65 RSC: -1 TOS:  104 AR:   3 SB:   3 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  121 PC:  83 MPC:  5 IR:  65 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:  123 PC:  84 MPC:  2 IR:  32 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:  124 PC:  84 MPC: 28 IR:  32 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  0	INC
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:  126 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  128 PC:  85 MPC:  2 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  129 PC:  85 MPC:  8 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	JMP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  130 PC:  85 MPC:  5 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  131 PC:  85 MPC:  9 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	JMP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:  133 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  135 PC:  79 MPC:  2 IR:  69 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  136 PC:  79 MPC: 26 IR:  69 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  137 PC:  79 MPC: 27 IR:  69 RSC: -1 TOS:   3 AR:   3 SB:   4 SP:  1	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  139 PC:  79 MPC:  5 IR:  69 RSC: -1 TOS:   4 AR:   3 SB:   4 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  141 PC:  80 MPC:  2 IR:  16 RSC: -1 TOS:   4 AR:   3 SB:   4 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  142 PC:  80 MPC: 35 IR:  16 RSC: -1 TOS:   4 AR:   3 SB:   4 SP:  1	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  143 PC:  80 MPC: 36 IR:  16 RSC: -1 TOS:  104 AR:   3 SB:   4 SP:  2	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:datapath.py:181 input: g
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  145 PC:  80 MPC:  5 IR:  16 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  147 PC:  81 MPC:  2 IR: 131 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  148 PC:  81 MPC: 10 IR: 131 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  149 PC:  81 MPC:  5 IR: 131 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  150 PC:  81 MPC: 11 IR: 131 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [82: 86           ] TICK:  152 PC:  82 MPC:  5 IR: 131 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  154 PC:  83 MPC:  2 IR:  65 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  155 PC:  83 MPC: 17 IR:  65 RSC: -1 TOS:  103 AR:   3 SB:   4 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  156 PC:  83 MPC: 18 IR:  65 RSC: -1 TOS:  103 AR:   4 SB:   4 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  157 PC:  83 MPC:  4 IR:  65 RSC: -1 TOS:  103 AR:   4 SB:   4 SP:  2	DATA_CACHE_WRITE_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  158 PC:  83 MPC: 19 IR:  65 RSC: -1 TOS:  103 AR:   4 SB:   4 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  160 PC:  83 MPC:  5 IR:  65 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:  162 PC:  84 MPC:  2 IR:  32 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:  163 PC:  84 MPC: 28 IR:  32 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  0	INC
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [84: Opcode.INC   ] TICK:  165 PC:  84 MPC:  5 IR:  32 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  167 PC:  85 MPC:  2 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  168 PC:  85 MPC:  8 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	JMP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  169 PC:  85 MPC:  5 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [85: Opcode.JMP   ] TICK:  170 PC:  85 MPC:  9 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	JMP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [78: 2            ] TICK:  172 PC:  78 MPC:  5 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  174 PC:  79 MPC:  2 IR:  69 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  175 PC:  79 MPC: 26 IR:  69 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  176 PC:  79 MPC: 27 IR:  69 RSC: -1 TOS:   4 AR:   4 SB:   5 SP:  1	DUP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [79: Opcode.DUP   ] TICK:  178 PC:  79 MPC:  5 IR:  69 RSC: -1 TOS:   5 AR:   4 SB:   5 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  180 PC:  80 MPC:  2 IR:  16 RSC: -1 TOS:   5 AR:   4 SB:   5 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  181 PC:  80 MPC: 35 IR:  16 RSC: -1 TOS:   5 AR:   4 SB:   5 SP:  1	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  182 PC:  80 MPC: 36 IR:  16 RSC: -1 TOS:  103 AR:   4 SB:   5 SP:  2	INPUT
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:datapath.py:181 input: e
+  DEBUG    root:simulation.py:50 [80: Opcode.INPUT ] TICK:  184 PC:  80 MPC:  5 IR:  16 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  186 PC:  81 MPC:  2 IR: 131 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  187 PC:  81 MPC: 10 IR: 131 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  188 PC:  81 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [81: Opcode.JZ    ] TICK:  189 PC:  81 MPC: 11 IR: 131 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	JZ
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [82: 86           ] TICK:  191 PC:  82 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  193 PC:  83 MPC:  2 IR:  65 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  194 PC:  83 MPC: 17 IR:  65 RSC: -1 TOS:  101 AR:   4 SB:   5 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  195 PC:  83 MPC: 18 IR:  65 RSC: -1 TOS:  101 AR:   5 SB:   5 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  196 PC:  83 MPC:  4 IR:  65 RSC: -1 TOS:  101 AR:   5 SB:   5 SP:  2	DATA_CACHE_WRITE_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [ -1| -1|U] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  197 PC:  83 MPC: 19 IR:  65 RSC: -1 TOS:  101 AR:   5 SB:   5 SP:  2	POP
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [  0|101|M] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:50 [83: Opcode.POP   ] TICK:  199 PC:  83 MPC:  5 IR:  65 RSC: -1 TOS:   5 AR:   5 SB:   5 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:55 CU cache: [ 10|131|U] [ 10| 86|U] [ 10| 65|U] [ 10| 32|U] [ 10|130|U] [ 10| 78|U] [  9| 69|U] [  9| 16|U] Ticks_left: 0 Ready: True
+  DEBUG    root:simulation.py:56 DP cache: [ -1| -1|U] [ -1| -1|U] [  0| 98|M] [  0|104|M] [  0|103|M] [  0|101|M] [ -1| -1|U] [ -1| -1|U] Ticks_left: 0 Ready: True
+  WARNING  root:simulation.py:58 Debug limit exceeded!
+  DEBUG    root:datapath.py:181 input: d
+  DEBUG    root:datapath.py:181 input: a
+  DEBUG    root:datapath.py:181 input: c
+  DEBUG    root:datapath.py:181 input: f
+  DEBUG    root:datapath.py:181 input: 
+  DEBUG    root:datapath.py:186 output: a << 97
+  DEBUG    root:datapath.py:186 output: ab << 98
+  DEBUG    root:datapath.py:186 output: abc << 99
+  DEBUG    root:datapath.py:186 output: abcd << 100
+  DEBUG    root:datapath.py:186 output: abcde << 101
+  DEBUG    root:datapath.py:186 output: abcdef << 102
+  DEBUG    root:datapath.py:186 output: abcdefg << 103
+  DEBUG    root:datapath.py:186 output: abcdefgh << 104
+  INFO     root:simulation.py:74 output_buffer: abcdefgh
+  INFO     root:simulation.py:119 End simulation

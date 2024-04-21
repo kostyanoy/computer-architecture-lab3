@@ -1,0 +1,219 @@
+in_source: |-
+  .data:
+      str STRING Hello world!
+
+  .code:
+      PUSH str
+
+  loop:
+      DUP
+      LOAD
+      JZ break
+      OUTPUT
+      INC
+      JMP loop
+
+  break:
+      DROP
+      HLT
+
+in_stdin: |-
+  No
+out_mnemonics: |
+  14 - 00000040 00000000 - Opcode.PUSH str
+  16 - 00000045          - Opcode.DUP
+  17 - 00000042          - Opcode.LOAD
+  18 - 00000083 0000000A - Opcode.JZ break
+  20 - 00000011          - Opcode.OUTPUT
+  21 - 00000020          - Opcode.INC
+  22 - 00000082 00000002 - Opcode.JMP loop
+  24 - 00000043          - Opcode.DROP
+  25 - 00000080          - Opcode.HLT
+out_code:
+- 13
+- 72
+- 101
+- 108
+- 108
+- 111
+- 32
+- 119
+- 111
+- 114
+- 108
+- 100
+- 33
+- 0
+- 64
+- 0
+- 69
+- 66
+- 131
+- 10
+- 17
+- 32
+- 130
+- 2
+- 67
+- 128
+out_stdout: |
+  LoC: 17 Code bytes: 104
+  ============================================================
+  Hello world!
+  Instructions: 78 Ticks: 499
+out_log: |
+  INFO     root:simulation.py:103 Start simulation
+  DEBUG    root:simulation.py:40 [ 0: None         ] TICK:    0 PC:   0 MPC:  0 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    1 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 0: None         ] TICK:    2 PC:   0 MPC:  5 IR:   0 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 1: Opcode.PUSH  ] TICK:    4 PC:   1 MPC:  2 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 1: Opcode.PUSH  ] TICK:    5 PC:   1 MPC: 15 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP: -1	PUSH
+  DEBUG    root:simulation.py:50 [ 1: Opcode.PUSH  ] TICK:    6 PC:   1 MPC:  5 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 1: Opcode.PUSH  ] TICK:    7 PC:   1 MPC: 16 IR:  64 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  0	PUSH
+  DEBUG    root:simulation.py:50 [ 2: 0            ] TICK:    9 PC:   2 MPC:  5 IR:  64 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   11 PC:   3 MPC:  2 IR:  69 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   12 PC:   3 MPC: 26 IR:  69 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   13 PC:   3 MPC: 27 IR:  69 RSC: -1 TOS:  -1 AR:   0 SB:   0 SP:  1	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   15 PC:   3 MPC:  5 IR:  69 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   17 PC:   4 MPC:  2 IR:  66 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   18 PC:   4 MPC: 20 IR:  66 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   19 PC:   4 MPC: 21 IR:  66 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   20 PC:   4 MPC:  3 IR:  66 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	DATA_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   21 PC:   4 MPC:  3 IR:  66 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	DATA_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   22 PC:   4 MPC: 22 IR:  66 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   24 PC:   4 MPC:  5 IR:  66 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   26 PC:   5 MPC:  2 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   27 PC:   5 MPC: 10 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   28 PC:   5 MPC:  5 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   29 PC:   5 MPC: 11 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 6: Opcode.BUFFER] TICK:   31 PC:   6 MPC:  5 IR: 131 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:   33 PC:   7 MPC:  2 IR:  17 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:   34 PC:   7 MPC: 37 IR:  17 RSC: -1 TOS:  72 AR:   0 SB:   0 SP:  1	OUTPUT
+  DEBUG    root:datapath.py:186 output: H << 72
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:   36 PC:   7 MPC:  5 IR:  17 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   38 PC:   8 MPC:  2 IR:  32 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   39 PC:   8 MPC: 28 IR:  32 RSC: -1 TOS:   0 AR:   0 SB:   0 SP:  0	INC
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   41 PC:   8 MPC:  5 IR:  32 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   42 PC:   8 MPC:  5 IR:  32 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   44 PC:   9 MPC:  2 IR: 130 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   45 PC:   9 MPC:  8 IR: 130 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   46 PC:   9 MPC:  5 IR: 130 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   47 PC:   9 MPC:  9 IR: 130 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 2: 0            ] TICK:   49 PC:   2 MPC:  5 IR: 130 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 2: 0            ] TICK:   50 PC:   2 MPC:  5 IR: 130 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   52 PC:   3 MPC:  2 IR:  69 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   53 PC:   3 MPC: 26 IR:  69 RSC: -1 TOS:   1 AR:   0 SB:   0 SP:  0	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   54 PC:   3 MPC: 27 IR:  69 RSC: -1 TOS:  72 AR:   0 SB:   1 SP:  1	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   56 PC:   3 MPC:  5 IR:  69 RSC: -1 TOS:   1 AR:   0 SB:   1 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   58 PC:   4 MPC:  2 IR:  66 RSC: -1 TOS:   1 AR:   0 SB:   1 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   59 PC:   4 MPC: 20 IR:  66 RSC: -1 TOS:   1 AR:   0 SB:   1 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   60 PC:   4 MPC: 21 IR:  66 RSC: -1 TOS:   1 AR:   1 SB:   1 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   61 PC:   4 MPC:  3 IR:  66 RSC: -1 TOS:   1 AR:   1 SB:   1 SP:  1	DATA_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   62 PC:   4 MPC: 22 IR:  66 RSC: -1 TOS:   1 AR:   1 SB:   1 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   64 PC:   4 MPC:  5 IR:  66 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   66 PC:   5 MPC:  2 IR: 131 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   67 PC:   5 MPC: 10 IR: 131 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   68 PC:   5 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:   69 PC:   5 MPC: 11 IR: 131 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 6: Opcode.BUFFER] TICK:   71 PC:   6 MPC:  5 IR: 131 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:   73 PC:   7 MPC:  2 IR:  17 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:   74 PC:   7 MPC: 37 IR:  17 RSC: -1 TOS:  101 AR:   1 SB:   1 SP:  1	OUTPUT
+  DEBUG    root:datapath.py:186 output: He << 101
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:   76 PC:   7 MPC:  5 IR:  17 RSC: -1 TOS:   1 AR:   1 SB:   1 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   78 PC:   8 MPC:  2 IR:  32 RSC: -1 TOS:   1 AR:   1 SB:   1 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   79 PC:   8 MPC: 28 IR:  32 RSC: -1 TOS:   1 AR:   1 SB:   1 SP:  0	INC
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:   81 PC:   8 MPC:  5 IR:  32 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   83 PC:   9 MPC:  2 IR: 130 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   84 PC:   9 MPC:  8 IR: 130 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   85 PC:   9 MPC:  5 IR: 130 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:   86 PC:   9 MPC:  9 IR: 130 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 2: 0            ] TICK:   88 PC:   2 MPC:  5 IR: 130 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   90 PC:   3 MPC:  2 IR:  69 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   91 PC:   3 MPC: 26 IR:  69 RSC: -1 TOS:   2 AR:   1 SB:   1 SP:  0	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   92 PC:   3 MPC: 27 IR:  69 RSC: -1 TOS:  101 AR:   1 SB:   2 SP:  1	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:   94 PC:   3 MPC:  5 IR:  69 RSC: -1 TOS:   2 AR:   1 SB:   2 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   96 PC:   4 MPC:  2 IR:  66 RSC: -1 TOS:   2 AR:   1 SB:   2 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   97 PC:   4 MPC: 20 IR:  66 RSC: -1 TOS:   2 AR:   1 SB:   2 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   98 PC:   4 MPC: 21 IR:  66 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:   99 PC:   4 MPC:  3 IR:  66 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  1	DATA_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  100 PC:   4 MPC: 22 IR:  66 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  102 PC:   4 MPC:  5 IR:  66 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  104 PC:   5 MPC:  2 IR: 131 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  105 PC:   5 MPC: 10 IR: 131 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  106 PC:   5 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  107 PC:   5 MPC: 11 IR: 131 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 6: Opcode.BUFFER] TICK:  109 PC:   6 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  111 PC:   7 MPC:  2 IR:  17 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  112 PC:   7 MPC: 37 IR:  17 RSC: -1 TOS:  108 AR:   2 SB:   2 SP:  1	OUTPUT
+  DEBUG    root:datapath.py:186 output: Hel << 108
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  114 PC:   7 MPC:  5 IR:  17 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  116 PC:   8 MPC:  2 IR:  32 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  117 PC:   8 MPC: 28 IR:  32 RSC: -1 TOS:   2 AR:   2 SB:   2 SP:  0	INC
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  119 PC:   8 MPC:  5 IR:  32 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  121 PC:   9 MPC:  2 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  122 PC:   9 MPC:  8 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  123 PC:   9 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  124 PC:   9 MPC:  9 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 2: 0            ] TICK:  126 PC:   2 MPC:  5 IR: 130 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  128 PC:   3 MPC:  2 IR:  69 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  129 PC:   3 MPC: 26 IR:  69 RSC: -1 TOS:   3 AR:   2 SB:   2 SP:  0	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  130 PC:   3 MPC: 27 IR:  69 RSC: -1 TOS:  108 AR:   2 SB:   3 SP:  1	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  132 PC:   3 MPC:  5 IR:  69 RSC: -1 TOS:   3 AR:   2 SB:   3 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  134 PC:   4 MPC:  2 IR:  66 RSC: -1 TOS:   3 AR:   2 SB:   3 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  135 PC:   4 MPC: 20 IR:  66 RSC: -1 TOS:   3 AR:   2 SB:   3 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  136 PC:   4 MPC: 21 IR:  66 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  137 PC:   4 MPC:  3 IR:  66 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  1	DATA_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  138 PC:   4 MPC: 22 IR:  66 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  140 PC:   4 MPC:  5 IR:  66 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  142 PC:   5 MPC:  2 IR: 131 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  143 PC:   5 MPC: 10 IR: 131 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  144 PC:   5 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  145 PC:   5 MPC: 11 IR: 131 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 6: Opcode.BUFFER] TICK:  147 PC:   6 MPC:  5 IR: 131 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  149 PC:   7 MPC:  2 IR:  17 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  150 PC:   7 MPC: 37 IR:  17 RSC: -1 TOS:  108 AR:   3 SB:   3 SP:  1	OUTPUT
+  DEBUG    root:datapath.py:186 output: Hell << 108
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  152 PC:   7 MPC:  5 IR:  17 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  154 PC:   8 MPC:  2 IR:  32 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  155 PC:   8 MPC: 28 IR:  32 RSC: -1 TOS:   3 AR:   3 SB:   3 SP:  0	INC
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  157 PC:   8 MPC:  5 IR:  32 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  159 PC:   9 MPC:  2 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  160 PC:   9 MPC:  8 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  161 PC:   9 MPC:  5 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  162 PC:   9 MPC:  9 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 2: 0            ] TICK:  164 PC:   2 MPC:  5 IR: 130 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  166 PC:   3 MPC:  2 IR:  69 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  167 PC:   3 MPC: 26 IR:  69 RSC: -1 TOS:   4 AR:   3 SB:   3 SP:  0	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  168 PC:   3 MPC: 27 IR:  69 RSC: -1 TOS:  108 AR:   3 SB:   4 SP:  1	DUP
+  DEBUG    root:simulation.py:50 [ 3: Opcode.DUP   ] TICK:  170 PC:   3 MPC:  5 IR:  69 RSC: -1 TOS:   4 AR:   3 SB:   4 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  172 PC:   4 MPC:  2 IR:  66 RSC: -1 TOS:   4 AR:   3 SB:   4 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  173 PC:   4 MPC: 20 IR:  66 RSC: -1 TOS:   4 AR:   3 SB:   4 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  174 PC:   4 MPC: 21 IR:  66 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  175 PC:   4 MPC:  3 IR:  66 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  1	DATA_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  176 PC:   4 MPC: 22 IR:  66 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  1	LOAD
+  DEBUG    root:simulation.py:50 [ 4: Opcode.LOAD  ] TICK:  178 PC:   4 MPC:  5 IR:  66 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  180 PC:   5 MPC:  2 IR: 131 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  181 PC:   5 MPC: 10 IR: 131 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  182 PC:   5 MPC:  5 IR: 131 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 5: Opcode.JZ    ] TICK:  183 PC:   5 MPC: 11 IR: 131 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	JZ
+  DEBUG    root:simulation.py:50 [ 6: Opcode.BUFFER] TICK:  185 PC:   6 MPC:  5 IR: 131 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  187 PC:   7 MPC:  2 IR:  17 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  188 PC:   7 MPC: 37 IR:  17 RSC: -1 TOS:  111 AR:   4 SB:   4 SP:  1	OUTPUT
+  DEBUG    root:datapath.py:186 output: Hello << 111
+  DEBUG    root:simulation.py:50 [ 7: Opcode.OUTPUT] TICK:  190 PC:   7 MPC:  5 IR:  17 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  192 PC:   8 MPC:  2 IR:  32 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  193 PC:   8 MPC: 28 IR:  32 RSC: -1 TOS:   4 AR:   4 SB:   4 SP:  0	INC
+  DEBUG    root:simulation.py:50 [ 8: Opcode.INC   ] TICK:  195 PC:   8 MPC:  5 IR:  32 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  197 PC:   9 MPC:  2 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	INSTRUCTION_FETCH
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  198 PC:   9 MPC:  8 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	JMP
+  DEBUG    root:simulation.py:50 [ 9: Opcode.JMP   ] TICK:  199 PC:   9 MPC:  5 IR: 130 RSC: -1 TOS:   5 AR:   4 SB:   4 SP:  0	PROG_CACHE_READ_FETCH
+  WARNING  root:simulation.py:58 Debug limit exceeded!
+  DEBUG    root:datapath.py:186 output: Hello  << 32
+  DEBUG    root:datapath.py:186 output: Hello w << 119
+  DEBUG    root:datapath.py:186 output: Hello wo << 111
+  DEBUG    root:datapath.py:186 output: Hello wor << 114
+  DEBUG    root:datapath.py:186 output: Hello worl << 108
+  DEBUG    root:datapath.py:186 output: Hello world << 100
+  DEBUG    root:datapath.py:186 output: Hello world! << 33
+  INFO     root:simulation.py:74 output_buffer: Hello world!
+  INFO     root:simulation.py:119 End simulation
